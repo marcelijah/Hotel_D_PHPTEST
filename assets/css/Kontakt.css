@@ -1,0 +1,330 @@
+/* Allgemeine Stil für den Body */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    overflow-x: hidden; /* verhindert horizontales Scrollen */
+}
+
+h1.EA-Hotel {
+    font-size: 2.2rem;
+    color: #01415b;
+    margin-left: 0;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+/* Navigation */
+nav.Leiste {
+    background-color: rgb(1, 65, 91); 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Links in der Navigation */
+nav.Leiste .nav-link {
+    color: white;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+}
+
+nav.Leiste .nav-link:hover {
+    background-color: rgb(1, 49, 68);
+    padding: 5px 15px;
+    border-radius: 5px;
+    transform: scale(1.1);
+}
+
+.slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 100vw; /* verhindert horizontales Scrollen */
+    height: 800px;     
+    overflow: hidden;
+    animation: fadeInZoom 0.9s ease-out forwards; /* neue Animation */
+}
+
+/* --- Allgemeiner Stil für alle Bilder ---- */
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    animation: slideshow 30s infinite; 
+}
+
+/* --- Einzelne Bilder --- */
+.s1 {
+    background-image: url('../img/Homepage_Bild1.jpg');
+    animation-delay: 0s;
+}
+
+.s2 {
+    background-image: url('../img/Homepage_Bild2.jpg');
+    animation-delay: 10s;
+}
+
+.s3 {
+    background-image: url('../img/Homepage_Bild3.jpg');
+    animation-delay: 20s;
+}
+
+/*  Animation: Fade In & Fade Out und slideshow */
+@keyframes slideshow {
+    0%   { opacity: 0; }
+    5%   { opacity: 1; }
+    30%  { opacity: 1; }   /* 1 Bild bleibt sichtbar 0 transparent */
+    35%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@keyframes fadeInZoom {
+    0% {
+        opacity: 0;
+        transform: scale(0.9); /* start kleiner */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);   /* auf normale Größe */
+    }
+}
+
+.slideshow-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* zentriert horizontal und vertikal */
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* leichter Schatten für bessere Lesbarkeit */
+    text-align: center;
+    pointer-events: none; /* verhindert, dass der Text klickbar ist */
+}
+
+/* Intro-Abschnitt */
+.kontakt {
+    display: flex;
+    justify-content: center;
+    margin: 80px 0;
+}
+
+/* Bild + Text nebeneinander */
+.kontakt-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 60px;
+    position: relative;
+}
+
+/* Bild links */
+.kontakt-image img {
+    width: 650px;
+    height: auto;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+    top: 60px;      /* Über der Box */
+    border-radius: 4px;
+}
+
+/* Rechte Box */
+.kontakt-textbox {
+    background: white;
+    padding: 50px 60px;
+    border: 1px solid rgba(1, 65, 91, 0.15); /* sehr helle Linie */
+    max-width: 750px;
+    position: relative;
+    
+}
+
+/* Titel */
+.kontakt-textbox h2 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: rgb(1, 65, 91);
+    margin-bottom: 5px;
+    font-family: serif;
+}
+
+/* Kleine Linie unter "Willkommen" */
+.divider {
+    width: 60px;
+    height: 2px;
+    background: rgb(1, 65, 91);
+    margin: 10px 0 25px 0;
+}
+
+.Daten h2{
+    font-size: 2rem;
+}
+
+.Daten h3{
+    font-size: 1.5rem;
+}
+
+/* Text */
+.kontakt-textbox p {
+    color: rgb(1, 65, 91);
+    line-height: 1.7;
+    font-size: 1.15rem;
+    margin-bottom: 15px;
+    font-family: serif;
+}
+
+/* Überschrift über dem Formular */
+.KontaktTitel {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-top: 40px;
+    margin-bottom: 10px;
+    color: rgb(1, 65, 91);
+    font-family: serif;
+}
+
+/* Bereich um das Formular */
+.FormularBereich {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+/* Die weiße Box um das Formular */
+.FormularBox {
+    background-color: #ffffff;
+    padding: 30px 35px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+    max-width: 1000px;
+    width: 100%;
+}
+
+/* Ein Feld (Label + Input oder Textarea) */
+.FormFeld {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+/* Label bleibt wie es ist, aber schöner formatiert */
+.FormFeld label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Inputs/Textareas bleiben DEINE IDs, bekommen nur Style */
+.FormFeld input,
+.FormFeld textarea {
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: serif;
+}
+
+/* schöner Fokus */
+.FormFeld input:focus,
+.FormFeld textarea:focus {
+    border-color: rgb(1, 65, 91);
+    box-shadow: 0 0 4px rgba(1, 65, 91, 0.4);
+}
+
+/* Dein existierender Button */
+#Button {
+    background-color: rgb(1, 65, 91);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Hover-Effekt */
+#Button:hover {
+    background-color: rgb(1, 49, 68);
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .FormularBox {
+        padding: 20px;
+        margin: 0 15px;
+    }
+
+    .KontaktTitel {
+        font-size: 1.7rem;
+    }
+}
+
+
+
+footer {
+    background-color: rgb(1, 65, 91);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    width: 100%;
+    bottom: 0;
+    position: relative;
+    margin-top: 30px;
+}
+
+/* für kleinere Bildschirmgrößen */
+@media (max-width: 768px) {
+    .EA-Hotel {
+        font-size: 1.8em;
+    }
+    nav.Leiste {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .kontakt {
+        padding: 30px 20px;
+    }
+   .kontakt-container {
+        flex-direction: column; /* Bild unter Text oder umgekehrt */
+        align-items: center;    /* Zentriert alles horizontal */
+        gap: 30px;              /* Weniger Abstand */
+        padding: 20px;          /* Innenabstand */
+    }
+
+    .kontakt-image img {
+        width: 100%;           /* Bild passt sich Bildschirm an */
+        max-width: 400px;      /* nicht zu groß */
+        margin-top: 20px;      /* leicht Abstand nach oben */
+    }
+
+    .kontakt-textbox {
+        padding: 30px 20px;    /* Textbox kleiner machen */
+        max-width: 100%;       /* passt sich an */
+    }
+
+    .kontakt-textbox h2 {
+        font-size: 1.8rem;    /* kleinere Überschrift */
+    }
+
+    .kontakt-textbox p {
+        font-size: 1rem;      /* Text etwas kleiner */
+        line-height: 1.6;     /* angenehmer Lesefluss */
+    }
+    .slideshow-text {
+        font-size: 1.5rem;
+    }
+}
+
+.welcome-bar {
+    color: #01415b; /* passend zum EA HOTEL Schriftzug */
+    font-weight: 500;
+    font-size: 1.2rem;
+    white-space: nowrap; /* verhindert Zeilenumbruch */
+}
