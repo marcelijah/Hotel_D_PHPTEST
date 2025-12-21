@@ -8,63 +8,22 @@
             <link rel="stylesheet" href="assets/css/Aboutuspage.css">
         </head>
         <body>
-
-            <div class="container-fluid px-0">
                 
-        <!-- Header -->
-        <header class="container-fluid p-0 position-relative">
-            <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel</h1>
+        <?php require_once __DIR__ . '/includes/header.php'; ?>
 
-            <?php if(isset($_SESSION['loggedin'])): 
-                $user = $_SESSION['users'][$_SESSION['loggedin']];
-            ?>
-                <span class="welcome-bar position-absolute top-0 end-0 me-3 mt-2">
-                    Welcome, <?php echo htmlspecialchars($user['vorname']); ?>!
-                </span>
-            <?php endif; ?>
-        </header>
-
-        <!-- Navigation -->
-        <nav class="Leiste navbar navbar-expand-md navbar-dark sticky-top">
-            <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarContent">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item"><a class="nav-link" href="Homepage.php">Homepage</a></li>
-                        <li class="nav-item"><a class="nav-link" href="Roomsavailabilitypage.php">Rooms & Availability</a></li>
-                        <li class="nav-item"><a class="nav-link" href="Contactpage.php">Contact Us</a></li>
-                        <li class="nav-item"><a class="nav-link" href="Aboutuspage.php">About Us</a></li>
-
-                        <?php
-                        if (!isset($_SESSION['loggedin'])) {
-                            echo '<li class="nav-item"><a class="nav-link" href="Loginpage.php">Login</a></li>';
-                            echo '<li class="nav-item"><a class="nav-link" href="Registrationpage.php">Registration</a></li>';
-                        }
-
-                        if (isset($_SESSION['loggedin'])) {
-                            echo '<li class="nav-item"><a class="nav-link" href="Mybookingspage.php">Meine Buchungen</a></li>';
-                            echo '<li class="nav-item"><a class="nav-link" href="logoutlogic.php">Logout</a></li>';
-                        }
-                        ?>
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <?php require_once __DIR__ . '/includes/nav.php'; ?>
 
 
         <div class="slideshow">
             <div class="slide s1"></div>
             <div class="slide s2"></div>
             <div class="slide s3"></div>
-            <div class="slideshow-text">Über Uns</div>
+            <div class="slideshow-text">About Us</div>
         </div>
 
-        <div class="container Aboutus-container my-5">
+        <div class="container Überuns-container my-5">
             <h2>About EA Hotel</h2>
-            <div class="Aboutus-textbox">
+            <div class="Überuns-textbox">
                 <p>Situated directly on the azure Mediterranean, just a few steps from the stunning sandy beach of Larnaca, the EA Hotel is a retreat that combines the natural beauty of Cyprus with modern comfort and Mediterranean serenity. Surrounded by a vibrant environment characterized by Cypriot hospitality and international flair, our hotel blends tranquility and elegance with proximity to the island's cultural treasures, such as the famous Finikoudes promenade and the historic Church of Saint Lazarus.</p>
                 <p>Our goal is to delight every guest in a personal, sincere, and unique way, understanding their wishes and meeting them with transparency, professionalism, and warmth.</p>
                 <p>Our daily mission is to make a tangible difference—through continuous improvement, careful attention to detail, and tailored services designed to make your stay unforgettable. We want to help you rediscover a sense of your own time, relaxation, and rhythm by offering an atmosphere that harmoniously combines peace, inspiration, and well-being.</p>
@@ -82,7 +41,7 @@
                     <p>Thanks to his experience and organizational skills, he ensures that hotel operations run smoothly, allowing our guests to relax completely. His goal is to add a personal touch to every stay that leaves a lasting impression.</p>
                 </div>
                 <div class="col-md-6 team-image">
-                    <img src="assets/img/Contactimg1.jpg" alt="Cooles Instafoto von Arian" class="img-fluid">
+                    <img src="assets/img/Contact_img1.jpg" alt="Cooles Instafoto von Arian" class="img-fluid">
                 </div>
             </div>
 
@@ -113,12 +72,8 @@
             </div>
         </div>
 
-        <footer class="text-white text-center py-3 mt-5">
-        <p>&copy; 2025 EA Hotel</p>
-        <p>123 Finikoudes Avenue, 6023 Larnaca, Cyprus</p>
-        <p>+4369910059138</p>
-        <p>wi24b056@technikum-wien.at</p>
-    </footer>
+        <!-- Footer -->
+        <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
     </div>
 

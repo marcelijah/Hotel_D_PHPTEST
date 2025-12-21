@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - EA Hotel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/Anmelden.css">
+    <link rel="stylesheet" href="assets/css/Loginpage.css">
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -21,11 +21,11 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="Homepage.php">Homepage</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Zimmer&Verfügbarkeit.php">Zimmer & Verfügbarkeit</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Kontakt.php">Kontakt</a></li>
-                    <li class="nav-item"><a class="nav-link" href="ÜberUns.php">Über Uns</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Anmelden.php">Anmelden</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Registrierung.php">Registrieren</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Roomsavailabilitypage.php">Rooms & Availability</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Contactpage.php">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Aboutuspage.php">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Loginpage.php">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Registrationpage.php">Register</a></li>
                 </ul>
             </div>
         </div>
@@ -33,8 +33,8 @@
 
     <main class="flex-fill">
         <div class="container my-5">
-            <h1 class="AnmeldenTitel text-center">Anmelden</h1>
-            <h3 class="Anmelden text-center mb-4">Melden Sie sich an</h3>
+            <h1 class="AnmeldenTitel text-center">Login</h1>
+            <h3 class="Anmelden text-center mb-4">Sign in</h3>
 
             <div class="row justify-content-center">
                 <div class="col-12 col-md-6">
@@ -53,26 +53,22 @@
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="Passwort" class="form-label">Passwort</label>
+                            <label for="Passwort" class="form-label">Password</label>
                             <input type="password" class="form-control" id="Passwort" name="Passwort" required>
                         </div>
-                        <button type="submit" class="btn w-100" id="Button">Anmelden</button>
+                        <button type="submit" class="btn w-100" id="Button">Login</button>
                     </form>
 
                     <div class="KeinAccount mt-3 text-center">
-                        <a href="Registrierung.php">Noch keinen Account?</a>
+                        <a href="Registrationpage.php">No Account?</a>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="text-white text-center py-3 mt-5">
-        <p>&copy; 2025 EA Hotel</p>
-        <p>123 Finikoudes Avenue, 6023 Larnaca, Zypern</p>
-        <p>+4369910059138</p>
-        <p>wi24b056@technikum-wien.at</p>
-    </footer>
+    <!-- Footer -->
+    <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

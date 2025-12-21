@@ -22,7 +22,7 @@ foreach($_SESSION['users'] as $user) {
 
 if($email_exists) {
     $_SESSION['register_error'] = "Diese E-Mail ist bereits registriert!";
-    header("Location: ../Registrierung.php");
+    header("Location: ../Registrationpage.php");
     exit;
 } else {
     // Neuen User speichern

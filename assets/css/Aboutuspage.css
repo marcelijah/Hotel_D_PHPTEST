@@ -55,9 +55,9 @@ h1.EA-Hotel {
     animation: slideshow 30s infinite;
 }
 
-.s1 { background-image: url('../img/Homepage_Bild1.jpg'); animation-delay: 0s; }
-.s2 { background-image: url('../img/Homepage_Bild2.jpg'); animation-delay: 10s; }
-.s3 {background-image: url('../img/Homepage_Bild3.jpg'); animation-delay: 20s; }
+.s1 { background-image: url('../img/Homepage_img1.jpg'); animation-delay: 0s; }
+.s2 { background-image: url('../img/Homepage_img2.jpg'); animation-delay: 10s; }
+.s3 {background-image: url('../img/Homepage_img3.jpg'); animation-delay: 20s; }
 
 @keyframes slideshow {
     0% { opacity: 0; }

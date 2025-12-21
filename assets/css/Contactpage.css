@@ -57,17 +57,17 @@ nav.Leiste .nav-link:hover {
 
 /* --- Einzelne Bilder --- */
 .s1 {
-    background-image: url('../img/Homepage_Bild1.jpg');
+    background-image: url('../img/Homepage_img1.jpg');
     animation-delay: 0s;
 }
 
 .s2 {
-    background-image: url('../img/Homepage_Bild2.jpg');
+    background-image: url('../img/Homepage_img2.jpg');
     animation-delay: 10s;
 }
 
 .s3 {
-    background-image: url('../img/Homepage_Bild3.jpg');
+    background-image: url('../img/Homepage_img3.jpg');
     animation-delay: 20s;
 }
 

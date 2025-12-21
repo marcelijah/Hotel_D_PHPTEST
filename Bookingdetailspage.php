@@ -43,45 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Header -->
-    <header class="container-fluid p-0 position-relative">
-        <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel</h1>
+    <?php require_once __DIR__ . '/includes/header.php'; ?>
 
-        <?php 
-        if(isset($_SESSION['loggedin'])) {
-            $user = $_SESSION['users'][$_SESSION['loggedin']];
-            echo '<span class="welcome-bar position-absolute top-0 end-0 me-3 mt-2">'
-                . 'Welcome, ' . htmlspecialchars($user['vorname']) . '!'
-                . '</span>';
-        }
-        ?>
-    </header>
-
-    <!-- Navigation -->
-    <nav class="Leiste navbar navbar-expand-md navbar-dark sticky-top">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="Homepage.php">Homepage</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Roomsavailabilitypage.php">Rooms & Availability</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Contactpage.php">Contact us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Aboutuspage.php">About us</a></li>
-                    <?php
-                    if (!isset($_SESSION['loggedin'])) {
-                        echo '<li class="nav-item"><a class="nav-link" href="Loginpage.php">Login</a></li>';
-                        echo '<li class="nav-item"><a class="nav-link" href="Registrationpage.php">Registration</a></li>';
-                    } else {
-                        echo '<li class="nav-item"><a class="nav-link" href="Mybookingspage.php">My Bookings</a></li>';
-                        echo '<li class="nav-item"><a class="nav-link" href="logoutlogic.php">Logout</a></li>';
-                    }
-                    ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
+   <?php require_once __DIR__ . '/includes/nav.php'; ?>
 
     <!-- Main Content -->
     <main class="flex-fill">
@@ -103,12 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
     <!-- Footer -->
-    <footer class="text-white text-center py-3 mt-5">
-        <p>&copy; 2025 EA Hotel</p>
-        <p>123 Finikoudes Avenue, 6023 Larnaca, Cyprus</p>
-        <p>+4369910059138</p>
-        <p>wi24b056@technikum-wien.at</p>
-    </footer>
+    <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>

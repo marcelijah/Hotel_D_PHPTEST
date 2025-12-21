@@ -17,14 +17,14 @@ foreach($_SESSION['users'] as $key => $user) {
 
 if ($found) {
     if ($_SESSION['role'] === 'admin') {
-        header("Location: ../admin.php"); // Admin weiterleiten
+        header("Location: ../Adminpage.php"); // Admin weiterleiten
     } else {
         header("Location: ../Homepage.php"); // Normalen User weiterleiten
     }
     exit;
 } else {
     $_SESSION['login_error'] = "E-Mail oder Passwort ist falsch!";
-    header("Location: ../Anmelden.php");
+    header("Location: ../Loginpage.php");
     exit;
 }
 
