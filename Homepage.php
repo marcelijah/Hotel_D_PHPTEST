@@ -13,7 +13,7 @@
 
    <?php require_once __DIR__ . '/includes/nav.php'; ?>
 
-    <!-- SlideshowTest -->
+    <!-- Slideshow -->
     <div class="slideshow">
         <div class="slide s1"></div>
         <div class="slide s2"></div>
