@@ -63,7 +63,7 @@ $adminUser = $_SESSION['users'][$_SESSION['loggedin']];
                     <div class="card-body">
                         <h5 class="card-title">Manage Rooms</h5>
                         <p class="card-text">Add new rooms or edit existing ones.</p>
-                        <a href="manage_rooms.php" class="btn-admin">Manage Rooms</a>
+                        <a href="Manageroomspage.php" class="btn-admin">Manage Rooms</a>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@ $adminUser = $_SESSION['users'][$_SESSION['loggedin']];
                     <div class="card-body">
                         <h5 class="card-title">Check Bookings</h5>
                         <p class="card-text">View, edit, or cancel all bookings.</p>
-                        <a href="check_bookings.php" class="btn-admin">Check Bookings</a>
+                        <a href="Checkbookingspage.php" class="btn-admin">Check Bookings</a>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,7 @@ $adminUser = $_SESSION['users'][$_SESSION['loggedin']];
                     <div class="card-body">
                         <h5 class="card-title">Occupancy & Reports</h5>
                         <p class="card-text">Overview of occupied rooms and occupancy.</p>
-                        <a href="reports.php" class="btn-admin">View Reports</a>
+                        <a href="Reportspage.php" class="btn-admin">View Reports</a>
                     </div>
                 </div>
             </div>

@@ -47,7 +47,7 @@
                     }
                     ?>
 
-                    <form action="forms/login.php" method="post" class="FormularioBox">
+                    <form action="forms/loginlogic.php" method="post" class="FormularioBox">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-Mail</label>
                             <input type="email" class="form-control" id="email" name="email" required>
