@@ -18,7 +18,7 @@ $adminUser = $_SESSION['users'][$_SESSION['loggedin']];
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Edit Bookings - EA Hotel Admin</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/admin.css">
+<link rel="stylesheet" href="assets/css/Adminpage.css">
 </head>
 
 <body>
@@ -26,7 +26,7 @@ $adminUser = $_SESSION['users'][$_SESSION['loggedin']];
     <header class="container-fluid p-0 position-relative">
         <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel Admin</h1>
         <div class="welcome-bar position-absolute top-0 end-0 me-3 mt-3">
-            Willkommen, <?php echo htmlspecialchars($adminUser['vorname']); ?>!
+            Welcome, <?php echo htmlspecialchars($adminUser['vorname']); ?>!
         </div>
     </header>
 

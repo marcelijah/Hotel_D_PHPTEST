@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Check Availability - EA Hotel</title>
+<title>Check Booking Details - EA Hotel</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/Zimmer&Verfügbarkeit.css">
+<link rel="stylesheet" href="assets/css/Roomsavailabilitypage.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if(isset($_SESSION['loggedin'])) {
             $user = $_SESSION['users'][$_SESSION['loggedin']];
             echo '<span class="welcome-bar position-absolute top-0 end-0 me-3 mt-2">'
-                . 'Willkommen, ' . htmlspecialchars($user['vorname']) . '!'
+                . 'Welcome, ' . htmlspecialchars($user['vorname']) . '!'
                 . '</span>';
         }
         ?>
@@ -66,16 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="Homepage.php">Homepage</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Zimmer&Verfügbarkeit.php">Zimmer & Verfügbarkeit</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Kontakt.php">Kontakt</a></li>
-                    <li class="nav-item"><a class="nav-link" href="ÜberUns.php">Über Uns</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Roomsavailabilitypage.php">Rooms & Availability</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Contactpage.php">Contact us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Aboutuspage.php">About us</a></li>
                     <?php
                     if (!isset($_SESSION['loggedin'])) {
-                        echo '<li class="nav-item"><a class="nav-link" href="Anmelden.php">Anmelden</a></li>';
-                        echo '<li class="nav-item"><a class="nav-link" href="Registrierung.php">Registrieren</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="Loginpage.php">Login</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="Registrationpage.php">Registration</a></li>';
                     } else {
-                        echo '<li class="nav-item"><a class="nav-link" href="MeineBuchungen.php">Meine Buchungen</a></li>';
-                        echo '<li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="Mybookingspage.php">My Bookings</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="logoutlogic.php">Logout</a></li>';
                     }
                     ?>
                 </ul>
@@ -86,18 +86,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Main Content -->
     <main class="flex-fill">
         <div class="container my-5">
-            <h1 class="text-center mb-4">Buchungsvorschau</h1>
+            <h1 class="text-center mb-4">Booking Preview</h1>
 
             <?php if($meldung): ?>
                 <div class=" text-center"><?php echo $meldung; ?></div>
             <?php endif; ?>
 
             <div class="text-center mt-3">
-                <a href="Zimmer&Verfügbarkeit.php" class="btn-buchen" style="color: white; background-color: rgb(1, 65, 91); padding: 12px 24px; border-radius: 5px; display: inline-block; text-decoration: none;">Zurück zur Buchung</a>
+                <a href="Roomsavailabilitypage.php" class="btn-buchen" style="color: white; background-color: rgb(1, 65, 91); padding: 12px 24px; border-radius: 5px; display: inline-block; text-decoration: none;">Back to Bookingpage</a>
             </div>
 
             <div class="text-center mt-3">
-                <a href="Zimmer&Verfügbarkeit.php" class="btn-buchen" style="color: white; background-color: rgb(1, 65, 91); padding: 12px 24px; border-radius: 5px; display: inline-block; text-decoration: none;">Buchen</a>
+                <a href="Roomsavailabilitypage.php" class="btn-buchen" style="color: white; background-color: rgb(1, 65, 91); padding: 12px 24px; border-radius: 5px; display: inline-block; text-decoration: none;">Book</a>
             </div>
         </div>
     </main>
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Footer -->
     <footer class="text-white text-center py-3 mt-5">
         <p>&copy; 2025 EA Hotel</p>
-        <p>123 Finikoudes Avenue, 6023 Larnaca, Zypern</p>
+        <p>123 Finikoudes Avenue, 6023 Larnaca, Cyprus</p>
         <p>+4369910059138</p>
         <p>wi24b056@technikum-wien.at</p>
     </footer>
