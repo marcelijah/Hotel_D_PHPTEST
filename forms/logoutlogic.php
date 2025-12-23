@@ -1,11 +1,17 @@
 <?php
 require 'users.php';
 
-// Session löschen
-session_unset();
-session_destroy();
+session_start();
+ $_SESSION = []; // Empty session array or use session_unset();
+ // Destroy the session cookie (PHPSESSID)
+ if (ini_get("session.use_cookies")) {
+ $params = session_get_cookie_params();
+ setcookie(session_name(), ''
+, time() - 42000, $params["path"],
+ $params["domain"], $params["secure"], $params["httponly"]);
+ }
 
-// Weiterleitung zur Homepage
-header("Location: ../Homepage.php");
-exit;
+ session_destroy(); // Destroy the session
+ header("Location: ../Homepage.php"); // Redirect back to login
+ exit(); // Terminate the script
 ?>
