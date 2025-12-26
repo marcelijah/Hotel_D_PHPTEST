@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php 
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -39,7 +41,6 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-6">
 
-                    <!-- Fehlermeldung -->
                     <?php
                     if(isset($_SESSION['login_error'])) {
                         echo '<div class="alert alert-danger text-center mb-3">'.$_SESSION['login_error'].'</div>';
@@ -67,7 +68,6 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

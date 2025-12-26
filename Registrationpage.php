@@ -46,7 +46,7 @@
                     }
                     ?>
 
-                    <form action="forms/register.php" method="post" class="FormularioBox">
+                    <form action="forms/registerlogic.php" method="post" class="FormularioBox">
                         <div class="mb-3">
                             <label for="Vorname" class="form-label">First Name</label>
                             <input type="text" class="form-control" id="Vorname" name="Vorname" required>
@@ -67,7 +67,7 @@
                     </form>
 
                     <div class="KeinAccount mt-3 text-center">
-                        <a href="Login.php">You already have an account?</a>
+                        <a href="Loginpage.php">You already have an account?</a>
                     </div>
                 </div>
             </div>

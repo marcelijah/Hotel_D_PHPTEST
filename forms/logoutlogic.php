@@ -1,5 +1,4 @@
 <?php
-require 'users.php';
 
 session_start();
  $_SESSION = []; // Empty session array or use session_unset();
