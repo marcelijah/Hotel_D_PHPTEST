@@ -16,14 +16,14 @@ $adminName = $_SESSION['user_name'] ?? 'Admin';
 
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - EA Hotel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/Adminpage.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard - EA Hotel</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/Adminpage.css">
+    </head>
+    <body>
 
     <header class="container-fluid p-0 position-relative">
         <?php require_once __DIR__ . '/includes/header.php'; ?>
@@ -39,8 +39,7 @@ $adminName = $_SESSION['user_name'] ?? 'Admin';
                     <li class="nav-item"><a class="nav-link" href="forms/logoutlogic.php">Logout</a></li>
                 </ul>
             </div>
-        </div>
-    </nav>
+        </nav>
 
     <div class="slideshow">
         <div class="slide s1" style="background-image: url('assets/img/Homepage_img1.jpg');"></div>
@@ -62,7 +61,6 @@ $adminName = $_SESSION['user_name'] ?? 'Admin';
                         <a href="Manageroomspage.php" class="btn-admin">Manage Rooms</a>
                     </div>
                 </div>
-            </div>
 
             <div class="col-md-6">
                 <div class="card admin-card text-center shadow-sm">
@@ -72,7 +70,6 @@ $adminName = $_SESSION['user_name'] ?? 'Admin';
                         <a href="Checkbookingspage.php" class="btn-admin">Check Bookings</a>
                     </div>
                 </div>
-            </div>
 
             <div class="col-md-12">
                 <div class="card admin-card text-center shadow-sm">
@@ -83,8 +80,7 @@ $adminName = $_SESSION['user_name'] ?? 'Admin';
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
     <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
