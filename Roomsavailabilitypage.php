@@ -31,9 +31,9 @@
                             <p>Cozy single room with modern amenities and free Wi-Fi.</p>
                             <p class="zimmer-preis">Price: 75€ / night</p>
                         </div>
-                        <input type="radio" class="btn-check" name="Zimmer" id="Einzelzimmer" value="Einzelzimmer" autocomplete="off">
-                        <label for="Einzelzimmer" class="zimmer-label btn p-0 w-100">
-                            <img src="assets/img/Room_img1.jpg" class="img-fluid rounded shadow zimmer-img" alt="Einzelzimmer">
+                        <input type="radio" class="btn-check" name="Zimmer" id="Single room" value="Single room" autocomplete="off">
+                        <label for="Single room" class="zimmer-label btn p-0 w-100">
+                            <img src="assets/img/Room_img1.jpg" class="img-fluid rounded shadow zimmer-img" alt="Single room">
                             <div class="fw-bold mt-2">Single Room</div>
                         </label>
                     </div>
@@ -43,9 +43,9 @@
                             <p>Spacious double room with balcony, ideal for couples or friends.</p>
                             <p class="zimmer-preis">Price: 120€ / night</p>
                         </div>
-                        <input type="radio" class="btn-check" name="Zimmer" id="Doppelzimmer" value="Doppelzimmer" autocomplete="off">
-                        <label for="Doppelzimmer" class="zimmer-label btn p-0 w-100">
-                            <img src="assets/img/Room_img2.jpg" class="img-fluid rounded shadow zimmer-img" alt="Doppelzimmer">
+                        <input type="radio" class="btn-check" name="Zimmer" id="Double room" value="Double room" autocomplete="off">
+                        <label for="Double room" class="zimmer-label btn p-0 w-100">
+                            <img src="assets/img/Room_img2.jpg" class="img-fluid rounded shadow zimmer-img" alt="Double room">
                             <div class="fw-bold mt-2">Double Room</div>
                         </label>
                         </div>

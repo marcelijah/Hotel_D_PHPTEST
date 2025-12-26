@@ -1,42 +1,62 @@
 <?php
 session_start();
+require_once __DIR__ . "/../database.php";
 
-// Beispielhafte User-Daten (da keine Datenbank)
-if(!isset($_SESSION['users'])) {
-    $_SESSION['users'] = [];
-}
-
+// Daten aus dem HTML-Formular
 $vorname = $_POST['Vorname'] ?? '';
 $nachname = $_POST['Nachname'] ?? '';
 $email = $_POST['email'] ?? '';
-$passwort = $_POST['Passwort'] ?? '';
+$passwortRaw = $_POST['Passwort'] ?? '';
 
-// Prüfen, ob E-Mail bereits existiert
-$email_exists = false;
-foreach($_SESSION['users'] as $user) {
-    if($user['email'] === $email) {
-        $email_exists = true;
-        break;
-    }
-}
-
-if($email_exists) {
-    $_SESSION['register_error'] = "Diese E-Mail ist bereits registriert!";
+// 1. Validierung
+if(empty($vorname) || empty($nachname) || empty($email) || empty($passwortRaw)) {
+    $_SESSION['register_error'] = "Bitte alle Felder ausfüllen!";
     header("Location: ../Registrationpage.php");
     exit;
-} else {
-    // Neuen User speichern
-    $id = 'user' . (count($_SESSION['users']) + 1);
-    $_SESSION['users'][$id] = [
-        'vorname' => $vorname,
-        'nachname' => $nachname,
-        'email' => $email,
-        'passwort' => $passwort,
-        'role' => 'user' // neu hinzugefügt
-    ];
+}
 
-    // Direkt einloggen
-    $_SESSION['loggedin'] = $id;
-    header("Location: ../Homepage.php");
+try {
+    // 2. Prüfen, ob E-Mail existiert
+    // ACHTUNG: Spaltenname ist `E-Mail` (mit Bindestrich), daher in Backticks `...`
+    $checkStmt = $conn->prepare("SELECT ID FROM users WHERE `E-Mail` = ?");
+    $checkStmt->bind_param("s", $email);
+    $checkStmt->execute();
+    $checkStmt->store_result();
+
+    if ($checkStmt->num_rows > 0) {
+        $_SESSION['register_error'] = "Diese E-Mail ist bereits registriert!";
+        header("Location: ../Registrationpage.php");
+        exit;
+    }
+    $checkStmt->close();
+
+    // 3. User speichern
+    $passwortHash = password_hash($passwortRaw, PASSWORD_DEFAULT);
+    $isAdmin = 0; // Standard-User ist kein Admin
+
+    // Hier mappen wir deine exakten Tabellen-Spalten:
+    // `First Name`, `Surname`, `E-Mail`, `Password`, `isAdmin`
+    $sql = "INSERT INTO users (`First Name`, `Surname`, `E-Mail`, `Password`, `isAdmin`) VALUES (?, ?, ?, ?, ?)";
+    
+    $insertStmt = $conn->prepare($sql);
+    // "ssssi" steht für: String, String, String, String, Integer
+    $insertStmt->bind_param("ssssi", $vorname, $nachname, $email, $passwortHash, $isAdmin);
+    
+    if ($insertStmt->execute()) {
+        // Login-Session setzen
+        $_SESSION['loggedin'] = true;
+        $_SESSION['user_id'] = $conn->insert_id;
+        $_SESSION['user_name'] = $vorname; // Oder $nachname, je nach Wunsch
+        
+        header("Location: ../Homepage.php");
+        exit;
+    } else {
+        throw new Exception("Speichern fehlgeschlagen.");
+    }
+
+} catch (Exception $e) {
+    $_SESSION['register_error'] = "Fehler: " . $e->getMessage();
+    header("Location: ../Registrationpage.php");
     exit;
 }
+?>

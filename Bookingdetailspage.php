@@ -9,19 +9,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $checkin = $_POST['Check-in'] ?? '';
     $checkout = $_POST['Check-out'] ?? '';
 
-    $preise = ['Einzelzimmer' => 75, 'Doppelzimmer' => 120];
+    $preise = ['Single room' => 75, 'Double room' => 120];
 
     if ($zimmer && $personen && $checkin && $checkout) {
         $tage = (new DateTime($checkout))->diff(new DateTime($checkin))->days;
 
         if ($tage > 0) {
             $gesamtpreis = $preise[$zimmer] * $tage;
-            $meldung = "Ihr gewähltes Zimmer: <strong>$zimmer</strong><br>
-                        Anzahl der Personen: <strong>$personen</strong><br>
+            $meldung = "Your selected Room: <strong>$zimmer</strong><br>
+                        Number of Persons: <strong>$personen</strong><br>
                         Check In: <strong>$checkin</strong><br>
                         Check Out: <strong>$checkout</strong><br>
-                        Nächte: <strong>$tage</strong><br>
-                        Gesamtpreis: <strong>$gesamtpreis €</strong><br>
+                        Nights: <strong>$tage</strong><br>
+                        Total Price: <strong>$gesamtpreis €</strong><br>
                         ";
         } else {
             $meldung = "Check-out muss nach Check-in liegen!";

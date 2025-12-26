@@ -1,13 +1,16 @@
 <?php
 session_start();
-require 'forms/users.php';
+// Wir binden die Datenbank ein, falls wir später die Zimmeranzahl direkt anzeigen wollen
+require_once 'database.php'; 
 
-if (!isset($_SESSION['loggedin']) || $_SESSION['role'] !== 'admin') {
+// 1. Sicherheits-Check: Ist User eingeloggt UND Admin (is_admin === 1)?
+if (!isset($_SESSION['loggedin']) || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1) {
     header("Location: Homepage.php");
     exit;
 }
 
-$adminUser = $_SESSION['users'][$_SESSION['loggedin']];
+// Das alte Array $adminUser brauchen wir nicht mehr.
+// Der Name steht jetzt in $_SESSION['user_name'].
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +27,7 @@ $adminUser = $_SESSION['users'][$_SESSION['loggedin']];
     <header class="container-fluid p-0 position-relative">
         <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel Admin</h1>
         <div class="welcome-bar position-absolute top-0 end-0 me-3 mt-3">
-            Welcome, <?php echo htmlspecialchars($adminUser['vorname']); ?>!
+            Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!
         </div>
     </header>
 
@@ -45,18 +48,20 @@ $adminUser = $_SESSION['users'][$_SESSION['loggedin']];
             <div class="col-md-6">
                 <div class="card shadow-sm text-center p-4">
                     <h5>Add New Room</h5>
+                    <p class="text-muted small">Create a new room type in the database.</p>
                     <a href="#" class="btn-admin mt-3">Add Room</a>
                 </div>
             </div>
+            
             <div class="col-md-6">
                 <div class="card shadow-sm text-center p-4">
                     <h5>Edit Existing Rooms</h5>
+                    <p class="text-muted small">Change prices or descriptions.</p>
                     <a href="#" class="btn-admin mt-3">Edit Rooms</a>
                 </div>
             </div>
         </div>
     </main>
-    <!-- Footer -->
     <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
