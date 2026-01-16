@@ -10,11 +10,8 @@
 <body>
     
     <?php require_once __DIR__ . '/includes/header.php'; ?>
+    <?php require_once __DIR__ . '/includes/nav.php'; ?>
 
-   <?php require_once __DIR__ . '/includes/nav.php'; ?>
-
-
-    <!-- Slideshow -->
     <div class="slideshow">
         <div class="slide s1"></div>
         <div class="slide s2"></div>
@@ -22,7 +19,6 @@
         <div class="slideshow-text">Contact Us</div>
     </div>
 
-    <!-- Kontakt-Bereich -->
     <div class="kontakt">
         <div class="kontakt-container">
             <div class="kontakt-image">
@@ -47,12 +43,23 @@
     </div>
 
     <h1 class="KontaktTitel">Send us a message</h1>
+    
+    <?php if(isset($_GET['status'])): ?>
+        <div class="container text-center mb-4">
+            <?php if($_GET['status'] == 'success'): ?>
+                <div class="alert alert-success">Message sent successfully! We will get back to you soon.</div>
+            <?php elseif($_GET['status'] == 'error'): ?>
+                <div class="alert alert-danger">Error sending message. Please try again.</div>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
     <section class="FormularBereich">
-        <form action="kontakt_send.php" method="post" class="FormularBox">
+        <form action="forms/contact_send.php" method="post" class="FormularBox" enctype="multipart/form-data">
             <div class="FormFeld">
                 <label for="Vorname">First Name</label>
-                <input id="Vorname" name="Vorname" type="text" required>
+                <input id="Vorname" name="Vorname" type="text" required 
+                       value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>">
 
                 <label for="Nachname">Surname</label>
                 <input id="Nachname" name="Nachname" type="text" required>           
@@ -63,12 +70,20 @@
                 <label for="Nachricht">Message</label>
                 <textarea id="Nachricht" name="Nachricht" rows="4" required></textarea>
             </div>
-            <button id="Button" type="submit">Send</button>
+            
+            <div class="d-flex align-items-end gap-3 mt-3">
+                <div class="flex-grow-1">
+                    <label for="attachment" class="form-label mb-1 fw-bold text-muted" style="font-size: 0.9rem;">Attach File (optional)</label>
+                    <input class="form-control" type="file" id="attachment" name="attachment">
+                </div>
+                
+                <button id="Button" type="submit" class="btn" style="height: 38px; margin-top: 0; min-width: 100px;">Send</button>
+            </div>
+
         </form>
 
     </section>
 
-    <!-- Footer -->
     <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>     

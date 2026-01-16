@@ -3,56 +3,106 @@ session_start();
 require_once 'database.php'; 
 
 $error_message = '';
-// WICHTIG: Das heutige Datum definieren wir gleich hier oben, 
-// damit wir es im HTML (für das min-Attribut) nutzen können.
 $heute = date('Y-m-d'); 
+
+// 1. ZIMMERTYPEN LADEN & MAXIMALE GÄSTEZAHL ERMITTELN
+$sqlTypes = "SELECT * FROM room_types ORDER BY price ASC";
+$resultTypes = $conn->query($sqlTypes);
+
+$roomTypes = [];
+$maxGuestsGlobal = 1; // Startwert
+
+if ($resultTypes) {
+    while($row = $resultTypes->fetch_assoc()) {
+        $roomTypes[] = $row;
+        
+        // Logik: Wie viele Personen passen in DIESES Zimmer?
+        $pCap = 2; // Standard
+        $n = $row['name'];
+        
+        if (stripos($n, 'Single') !== false) {
+            $pCap = 1;
+        } elseif (stripos($n, 'Double') !== false) {
+            $pCap = 2;
+        } elseif (stripos($n, 'Triple') !== false) {
+            $pCap = 3;
+        } elseif (stripos($n, 'Quadruple') !== false) {
+            $pCap = 4;
+        } elseif (stripos($n, 'Suite') !== false || stripos($n, 'Family') !== false) {
+            $pCap = 5;
+        }
+        
+        // Ist das die bisher höchste Kapazität?
+        if ($pCap > $maxGuestsGlobal) {
+            $maxGuestsGlobal = $pCap;
+        }
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
     
     $zimmerName = $_POST['Zimmer'] ?? '';
     $checkin = $_POST['Check-in'] ?? '';
     $checkout = $_POST['Check-out'] ?? '';
-    $personen = $_POST['Personen'] ?? '';
+    $personen = (int)($_POST['Personen'] ?? 0); 
 
     $_SESSION['temp_inputs'] = $_POST;
 
-    // --- SICHERHEITS-CHECK (Backend) ---
-    // Falls jemand HTML manipuliert, fängt PHP ihn hier ab.
-    if ($checkin < $heute) {
+    // --- VALIDIERUNG ---
+    if (empty($zimmerName)) {
+        $error_message = "Please select a room type.";
+    }
+    elseif ($checkin < $heute) {
         $error_message = "Error: You cannot book dates in the past. Please start from today ($heute).";
     }
     elseif ($checkout <= $checkin) {
         $error_message = "Error: Check-out date must be after Check-in date.";
     }
     else {
-        // --- KAPAZITÄTS-CHECK ---
-        $stmtMax = $conn->prepare("SELECT capacity FROM room_types WHERE name = ?");
-        $stmtMax->bind_param("s", $zimmerName);
-        $stmtMax->execute();
-        $resMax = $stmtMax->get_result();
-        $rowMax = $resMax->fetch_assoc();
-        $stmtMax->close();
+        // --- SCHRITT 1: MAXIMALE PERSONEN ANHAND DES NAMENS BESTIMMEN ---
+        $max_allowed_guests = 2; 
+        
+        if (stripos($zimmerName, 'Single') !== false) $max_allowed_guests = 1;
+        elseif (stripos($zimmerName, 'Double') !== false) $max_allowed_guests = 2;
+        elseif (stripos($zimmerName, 'Triple') !== false) $max_allowed_guests = 3;
+        elseif (stripos($zimmerName, 'Quadruple') !== false) $max_allowed_guests = 4;
+        elseif (stripos($zimmerName, 'Suite') !== false || stripos($zimmerName, 'Family') !== false) $max_allowed_guests = 5;
 
-        if ($rowMax) {
-            $max_capacity = $rowMax['capacity'];
+        if ($personen > $max_allowed_guests) {
+            $error_message = "Error: The <strong>$zimmerName</strong> is only designed for a maximum of <strong>$max_allowed_guests guest(s)</strong>.";
+        } 
+        else {
+            // --- SCHRITT 2: BESTAND PRÜFEN (CAPACITY AUS DB) ---
+            $stmtMax = $conn->prepare("SELECT capacity FROM room_types WHERE name = ?");
+            $stmtMax->bind_param("s", $zimmerName);
+            $stmtMax->execute();
+            $resMax = $stmtMax->get_result();
+            $rowMax = $resMax->fetch_assoc();
+            $stmtMax->close();
 
-            $sqlCount = "SELECT COUNT(*) as active_bookings FROM bookings 
-                         WHERE room_type = ? 
-                         AND check_in < ? 
-                         AND check_out > ?";
-            
-            $stmtCount = $conn->prepare($sqlCount);
-            $stmtCount->bind_param("sss", $zimmerName, $checkout, $checkin);
-            $stmtCount->execute();
-            $current_active = $stmtCount->get_result()->fetch_assoc()['active_bookings'];
-            $stmtCount->close();
+            if ($rowMax) {
+                $total_rooms_in_stock = $rowMax['capacity']; 
+                
+                $sqlCount = "SELECT COUNT(*) as active_bookings FROM bookings 
+                             WHERE room_type = ? 
+                             AND check_in < ? 
+                             AND check_out > ?";
+                
+                $stmtCount = $conn->prepare($sqlCount);
+                $stmtCount->bind_param("sss", $zimmerName, $checkout, $checkin);
+                $stmtCount->execute();
+                $current_active = $stmtCount->get_result()->fetch_assoc()['active_bookings'];
+                $stmtCount->close();
 
-            if ($current_active >= $max_capacity) {
-                $error_message = "Sorry! All <strong>$zimmerName</strong>s are fully booked for these dates.";
+                if ($current_active >= $total_rooms_in_stock) {
+                    $error_message = "Sorry! All <strong>$zimmerName</strong>s are fully booked for these dates (0 left of $total_rooms_in_stock).";
+                } else {
+                    $_SESSION['temp_booking'] = $_POST;
+                    header("Location: Bookingdetailspage.php");
+                    exit;
+                }
             } else {
-                $_SESSION['temp_booking'] = $_POST;
-                header("Location: Bookingdetailspage.php");
-                exit;
+                 $error_message = "Error: Selected room type not found in database.";
             }
         }
     }
@@ -65,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
         <title>Reservation - EA Hotel</title>
-        <link rel="stylesheet" href="assets/css/RoomsAvailabilitypage.css">
+        <link rel="stylesheet" href="assets/css/Roomsavailabilitypage.css">
     </head>
     <body>
         
@@ -94,35 +144,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
 
                 <div class="container mt-4">
                     <div class="row justify-content-center g-4 zimmer-auswahl-bilder">
-                        <div class="col-12 col-md-6 text-center">
-                          <div class="zimmer-text mb-2">
-                                <p>Cozy single room with modern amenities and free Wi-Fi.</p>
-                                <p class="zimmer-preis">Price: 75€ / night</p>
-                            </div>
-                            <input type="radio" class="btn-check" name="Zimmer" id="Single room" value="Single room" autocomplete="off" <?php if(isset($_POST['Zimmer']) && $_POST['Zimmer'] == 'Single room') echo 'checked'; ?>>
-                            <label for="Single room" class="zimmer-label btn p-0 w-100">
-                                <img src="assets/img/Room_img1.jpg" class="img-fluid rounded shadow zimmer-img" alt="Single room">
-                                <div class="fw-bold mt-2">Single Room</div>
-                            </label>
-                        </div>
+                        
+                        <?php foreach ($roomTypes as $room): ?>
+                            <?php 
+                                // Bild-Logik
+                                $imgSrc = (stripos($room['name'], 'Single') !== false) ? 'assets/img/Room_img1.jpg' : 'assets/img/Room_img2.jpg';
+                                
+                                // Text-Logik (Fallback)
+                                $description = !empty($room['description']) ? $room['description'] : "Enjoy a comfortable stay in our exclusive rooms.";
+                                
+                                if (empty($room['description'])) {
+                                    if (stripos($room['name'], 'Single') !== false) {
+                                        $description = "Experience ultimate comfort in our exclusive single rooms, perfectly designed for solo travelers.";
+                                    } elseif (stripos($room['name'], 'Double') !== false) {
+                                        $description = "Relax in our spacious exclusive double rooms, offering a luxurious king-sized bed.";
+                                    } elseif (stripos($room['name'], 'Triple') !== false) {
+                                        $description = "Spacious triple room providing comfort for small groups or families with three beds.";
+                                    } elseif (stripos($room['name'], 'Quadruple') !== false) {
+                                        $description = "Large quadruple room with ample space, perfect for families of four looking for a relaxing stay.";
+                                    }
+                                }
 
-                        <div class="col-12 col-md-6 text-center">
-                            <div class="zimmer-text mb-2">
-                                <p>Spacious double room with balcony, ideal for couples or friends.</p>
-                                <p class="zimmer-preis">Price: 120€ / night</p>
+                                $isChecked = (isset($_POST['Zimmer']) && $_POST['Zimmer'] == $room['name']) ? 'checked' : '';
+                            ?>
+                            
+                            <div class="col-12 col-md-6 text-center">
+                                <div class="zimmer-text mb-2">
+                                    <p class="fw-bold mb-1" style="font-size: 1.2rem;"><?php echo htmlspecialchars($room['name']); ?></p>
+                                    <p class="mb-1 text-muted small"><?php echo htmlspecialchars($description); ?></p>
+                                    <p class="zimmer-preis">Price: <?php echo number_format($room['price'], 0); ?>€ / night</p>
+                                </div>
+                                
+                                <input type="radio" class="btn-check" 
+                                       name="Zimmer" 
+                                       id="room_<?php echo $room['id']; ?>" 
+                                       value="<?php echo htmlspecialchars($room['name']); ?>" 
+                                       autocomplete="off" 
+                                       <?php echo $isChecked; ?>>
+                                
+                                <label for="room_<?php echo $room['id']; ?>" class="zimmer-label btn p-0 w-100">
+                                    <img src="<?php echo $imgSrc; ?>" class="img-fluid rounded shadow zimmer-img" alt="<?php echo htmlspecialchars($room['name']); ?>">
+                                </label>
                             </div>
-                            <input type="radio" class="btn-check" name="Zimmer" id="Double room" value="Double room" autocomplete="off" <?php if(isset($_POST['Zimmer']) && $_POST['Zimmer'] == 'Double room') echo 'checked'; ?>>
-                            <label for="Double room" class="zimmer-label btn p-0 w-100">
-                                <img src="assets/img/Room_img2.jpg" class="img-fluid rounded shadow zimmer-img" alt="Double room">
-                                <div class="fw-bold mt-2">Double Room</div>
-                            </label>
-                        </div>
+
+                        <?php endforeach; ?>
+
                     </div>
                 </div>
 
                 <div>
                     <label for="Personen">Guests</label>
-                    <input type="number" name="Personen" id="Personen" min="1" max="2" required value="<?php echo $_POST['Personen'] ?? ''; ?>">
+                    <input type="number" name="Personen" id="Personen" min="1" 
+                           max="<?php echo $maxGuestsGlobal; ?>" 
+                           required 
+                           value="<?php echo $_POST['Personen'] ?? ''; ?>" 
+                           placeholder="Max. <?php echo $maxGuestsGlobal; ?> guests">
+                    <small class="text-muted">Maximum allowed guests based on available rooms: <?php echo $maxGuestsGlobal; ?></small>
                 </div>
 
                 <div class="Datum">
