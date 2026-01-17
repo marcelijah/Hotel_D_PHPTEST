@@ -25,20 +25,10 @@ $result = $conn->query($sql);
 <body>
 
     <header class="container-fluid p-0 position-relative">
-        <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel</h1>
-        <div class="welcome-bar position-absolute top-0 end-0 me-3 mt-3">
-            Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!
-        </div>
+        <?php require_once __DIR__ . '/includes/header.php'; ?>
     </header>
 
-    <nav class="Leiste navbar navbar-expand-md navbar-dark sticky-top">
-        <div class="container">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item"><a class="nav-link" href="Adminpage.php">Admin Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="forms/logoutlogic.php">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php require_once __DIR__ . '/includes/adminnav.php'; ?>
 
     <main class="container py-5">
         <h2 class="text-center mb-4">Guest Messages & Inquiries</h2>

@@ -5,40 +5,44 @@ require_once 'database.php';
 $error_message = '';
 $heute = date('Y-m-d'); 
 
-// 1. ZIMMERTYPEN LADEN & MAXIMALE GÄSTEZAHL ERMITTELN
+// ZENTRALE KONFIGURATION: Mapping von Namen zu Kapazitäten
+// Das macht die if-else-Ketten unten überflüssig
+$capacityMap = [
+    'Single' => 1,
+    'Double' => 2,
+    'Triple' => 3,
+    'Quadruple' => 4,
+    'Suite' => 5,
+    'Family' => 5
+];
+
+// Hilfsfunktion um Kapazität zu finden
+function getCapacity($name, $map) {
+    foreach ($map as $key => $cap) {
+        if (stripos($name, $key) !== false) return $cap;
+    }
+    return 2; // Standard-Fallback
+}
+
+// 1. ZIMMERTYPEN LADEN
 $sqlTypes = "SELECT * FROM room_types ORDER BY price ASC";
 $resultTypes = $conn->query($sqlTypes);
 
 $roomTypes = [];
-$maxGuestsGlobal = 1; // Startwert
+$maxGuestsGlobal = 1;
 
 if ($resultTypes) {
     while($row = $resultTypes->fetch_assoc()) {
         $roomTypes[] = $row;
-        
-        // Logik: Wie viele Personen passen in DIESES Zimmer?
-        $pCap = 2; // Standard
-        $n = $row['name'];
-        
-        if (stripos($n, 'Single') !== false) {
-            $pCap = 1;
-        } elseif (stripos($n, 'Double') !== false) {
-            $pCap = 2;
-        } elseif (stripos($n, 'Triple') !== false) {
-            $pCap = 3;
-        } elseif (stripos($n, 'Quadruple') !== false) {
-            $pCap = 4;
-        } elseif (stripos($n, 'Suite') !== false || stripos($n, 'Family') !== false) {
-            $pCap = 5;
-        }
-        
-        // Ist das die bisher höchste Kapazität?
+        // Automatische Kapazität ermitteln
+        $pCap = getCapacity($row['name'], $capacityMap);
         if ($pCap > $maxGuestsGlobal) {
             $maxGuestsGlobal = $pCap;
         }
     }
 }
 
+// 2. FORMULAR VERARBEITUNG
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
     
     $zimmerName = $_POST['Zimmer'] ?? '';
@@ -48,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
 
     $_SESSION['temp_inputs'] = $_POST;
 
-    // --- VALIDIERUNG ---
+    // Validierung
     if (empty($zimmerName)) {
         $error_message = "Please select a room type.";
     }
@@ -59,20 +63,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
         $error_message = "Error: Check-out date must be after Check-in date.";
     }
     else {
-        // --- SCHRITT 1: MAXIMALE PERSONEN ANHAND DES NAMENS BESTIMMEN ---
-        $max_allowed_guests = 2; 
-        
-        if (stripos($zimmerName, 'Single') !== false) $max_allowed_guests = 1;
-        elseif (stripos($zimmerName, 'Double') !== false) $max_allowed_guests = 2;
-        elseif (stripos($zimmerName, 'Triple') !== false) $max_allowed_guests = 3;
-        elseif (stripos($zimmerName, 'Quadruple') !== false) $max_allowed_guests = 4;
-        elseif (stripos($zimmerName, 'Suite') !== false || stripos($zimmerName, 'Family') !== false) $max_allowed_guests = 5;
+        // Kapazität prüfen mit neuer Funktion
+        $max_allowed_guests = getCapacity($zimmerName, $capacityMap);
 
         if ($personen > $max_allowed_guests) {
             $error_message = "Error: The <strong>$zimmerName</strong> is only designed for a maximum of <strong>$max_allowed_guests guest(s)</strong>.";
         } 
         else {
-            // --- SCHRITT 2: BESTAND PRÜFEN (CAPACITY AUS DB) ---
+            // Bestand prüfen (DB Logic bleibt gleich)
             $stmtMax = $conn->prepare("SELECT capacity FROM room_types WHERE name = ?");
             $stmtMax->bind_param("s", $zimmerName);
             $stmtMax->execute();

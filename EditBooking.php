@@ -36,6 +36,7 @@ $heute = date('Y-m-d');
 <body class="d-flex flex-column min-vh-100">
 
     <?php require_once __DIR__ . '/includes/header.php'; ?>
+    
     <?php require_once __DIR__ . '/includes/nav.php'; ?>
 
     <main class="flex-grow-1 container my-5">

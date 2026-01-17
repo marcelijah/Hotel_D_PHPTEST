@@ -19,7 +19,6 @@ main {
     flex: 1; /* schiebt Footer nach unten */
 }
 
-
 /* =========================================
    Header & Logo
 ========================================= */
@@ -64,9 +63,7 @@ nav.Leiste .nav-link:hover {
 }
 
 
-/* =========================================
-   Admin-Karten (Dashboard)
-========================================= */
+/*Admin-Karten (Dashboard) */
 .admin-card {
     border: 1px solid rgba(1, 65, 91, 0.15);
     transition: transform 0.3s, box-shadow 0.3s;
@@ -78,9 +75,7 @@ nav.Leiste .nav-link:hover {
 }
 
 
-/* =========================================
-   Admin Buttons – EA Hotel Style
-========================================= */
+/* Admin Buttons – EA Hotel Style */
 .btn-admin {
     background-color: #01415b;
     color: white;
@@ -101,9 +96,7 @@ nav.Leiste .nav-link:hover {
 }
 
 
-/* =========================================
-   Slideshow
-========================================= */
+/* Slideshow */
 .slideshow {
     position: relative;
     width: 100%;
@@ -146,9 +139,7 @@ nav.Leiste .nav-link:hover {
 }
 
 
-/* =========================================
-   Footer
-========================================= */
+/* Footer */
 footer {
     background-color: rgb(1, 65, 91);
     color: white;

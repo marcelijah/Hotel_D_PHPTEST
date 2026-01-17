@@ -26,20 +26,9 @@ $adminName = $_SESSION['user_name'] ?? 'Admin';
         <?php require_once __DIR__ . '/includes/header.php'; ?>
     </header>
 
-    <nav class="Leiste navbar navbar-expand-md navbar-dark sticky-top">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="Adminpage.php">Admin Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="forms/logoutlogic.php">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php require_once __DIR__ . '/includes/adminnav.php'; ?>
 
+    <!-- Slideshow -->
     <div class="slideshow">
         <div class="slide s1" style="background-image: url('assets/img/Homepage_img1.jpg');"></div>
         <div class="slide s2" style="background-image: url('assets/img/Homepage_img2.jpg');"></div>
