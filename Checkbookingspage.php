@@ -31,7 +31,7 @@ $result = $conn->query($sql);
 <body>
 
     <header class="container-fluid p-0 position-relative">
-        <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel Admin</h1>
+        <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel</h1>
         <div class="welcome-bar position-absolute top-0 end-0 me-3 mt-3">
             Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!
         </div>
@@ -40,7 +40,7 @@ $result = $conn->query($sql);
     <nav class="Leiste navbar navbar-expand-md navbar-dark sticky-top">
         <div class="container">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item"><a class="nav-link" href="Adminpage.php">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="Adminpage.php">Admin Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" href="forms/logoutlogic.php">Logout</a></li>
             </ul>
         </div>

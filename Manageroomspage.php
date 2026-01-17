@@ -83,7 +83,7 @@ $result = $conn->query("SELECT * FROM room_types ORDER BY id ASC");
 <body>
 
     <header class="container-fluid p-0 position-relative">
-        <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel Admin</h1>
+        <h1 class="EA-Hotel text-center text-md-start ps-md-5">EA Hotel</h1>
         <div class="welcome-bar position-absolute top-0 end-0 me-3 mt-3">
             Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!
         </div>
