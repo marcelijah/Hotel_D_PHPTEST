@@ -1,14 +1,19 @@
-/* Body & allgemeines Layout */
+/* =========================================
+   Body & allgemeines Layout
+   Grundlegende Seiteneinstellungen
+========================================= */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     color: #333;
     overflow-x: hidden;
-    background-color: #f4f4f4;
+    background-color: #f4f4f4; /* Heller Hintergrund speziell für Login/Register */
 }
 
-/* EA Hotel Logo oben */
+/* =========================================
+   EA Hotel Logo oben
+========================================= */
 h1.EA-Hotel {
     font-size: 2.2rem;
     color: #01415b;
@@ -16,26 +21,35 @@ h1.EA-Hotel {
     font-weight: 600;
 }
 
-/* Navigation */
+/* =========================================
+   Navigation
+   Design der oberen Menüleiste
+========================================= */
 nav.Leiste {
     background-color: rgb(1, 65, 91); 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Links in der Navigation */
 nav.Leiste .nav-link {
     color: white;
     font-size: 1.2em;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease; /* Weicher Übergang bei Hover */
 }
 
+/* Hover-Effekt für Navigationslinks */
 nav.Leiste .nav-link:hover {
     background-color: rgb(1, 49, 68);
     padding: 5px 15px;
     border-radius: 5px;
-    transform: scale(1.1);
+    transform: scale(1.1); /* Leichte Vergrößerung */
 }
 
-/* Überschrift über dem Formular */
+/* =========================================
+   Überschriften und Textbereiche
+========================================= */
+
+/* Haupttitel "Login" */
 .AnmeldenTitel {
     text-align: center;
     font-size: 2.5rem;
@@ -43,18 +57,24 @@ nav.Leiste .nav-link:hover {
     color: rgb(1, 65, 91);
 }
 
+/* Untertitel "Sign in" */
 .Anmelden {
     text-align: center;
     font-size: 1.6rem;
     margin: 40px 0 10px 0;
 }
 
+/* Link für "No Account?" */
 .KeinAccount {
     text-align: center;
     margin-bottom: 20px;
 }
 
-/* Formularbereich */
+/* =========================================
+   Formularbereich
+========================================= */
+
+/* Äußerer Container zur Zentrierung */
 .FormularBereich {
     display: flex;
     justify-content: center;
@@ -62,45 +82,52 @@ nav.Leiste .nav-link:hover {
     margin-bottom: 40px;
 }
 
+/* Die weiße Box um das Formular */
 .FormularBox {
     background-color: #ffffff;
     padding: 30px 35px;
     border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.08); /* Sanfter Schatten */
     max-width: 500px;
     width: 100%;
 }
 
+/* Wrapper für einzelne Eingabefelder */
 .FormFeld {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
 }
 
+/* Label Styling */
 .FormFeld label {
     font-weight: 600;
     margin-bottom: 5px;
     color: #333;
 }
 
+/* Styling der Input-Felder */
 .FormFeld input,
 .FormFeld textarea {
     padding: 8px 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
     font-size: 1rem;
-    font-family: serif;
+    font-family: serif; /* Spezielle Schriftart für Inputs */
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Fokus-Zustand der Inputs (beim Hineinklicken) */
 .FormFeld input:focus,
 .FormFeld textarea:focus {
-    border-color: rgb(1, 65, 91);
-    box-shadow: 0 0 4px rgba(1, 65, 91, 0.4);
+    border-color: rgb(1, 65, 91); /* Blaue Umrandung */
+    box-shadow: 0 0 4px rgba(1, 65, 91, 0.4); /* Leuchtkraft */
 }
 
-/* Button */
+/* =========================================
+   Button Styling
+========================================= */
 #Button {
     background-color: rgb(1, 65, 91);
     color: #fff;
@@ -110,20 +137,22 @@ nav.Leiste .nav-link:hover {
     font-size: 1rem;
     cursor: pointer;
     margin-top: 5px;
-    width: 100%;
+    width: 100%; /* Volle Breite des Formulars */
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
+/* Hover-Effekt für den Button */
 #Button:hover {
     background-color: rgb(1, 49, 68);
-    transform: translateY(-1px);
+    transform: translateY(-1px); /* Leichtes Anheben */
 }
 
-/* Footer */
+/* =========================================
+   Footer
+========================================= */
 footer {
     background-color: rgb(1, 65, 91);
     color: white;
     text-align: center;
     padding: 15px;
-    /* bleibt unten am Ende der Seite, nicht fixiert */
 }

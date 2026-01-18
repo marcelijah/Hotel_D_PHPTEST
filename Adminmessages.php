@@ -1,14 +1,18 @@
 <?php
 session_start();
-require_once 'database.php';
+require_once 'database.php'; // Verbindung zur Datenbank herstellen
 
-// Nur Admin darf Nachrichten lesen
+// --- SICHERHEITS-CHECK ---
+// Nur eingeloggte Administratoren dürfen diese Seite sehen.
+// Wenn nicht eingeloggt oder kein Admin -> Zurück zur Homepage.
 if (!isset($_SESSION['loggedin']) || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1) {
     header("Location: Homepage.php");
     exit;
 }
 
-// Nachrichten abrufen (neueste zuerst)
+// --- DATEN ABRUFEN ---
+// Alle Nachrichten aus der Tabelle 'messages' holen.
+// 'ORDER BY created_at DESC' sorgt dafür, dass die neuesten Nachrichten oben stehen.
 $sql = "SELECT * FROM messages ORDER BY created_at DESC";
 $result = $conn->query($sql);
 ?>
@@ -23,10 +27,7 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-
-    <header class="container-fluid p-0 position-relative">
-        <?php require_once __DIR__ . '/includes/header.php'; ?>
-    </header>
+    <?php require_once __DIR__ . '/includes/header.php'; ?>
 
     <?php require_once __DIR__ . '/includes/adminnav.php'; ?>
 
@@ -34,7 +35,9 @@ $result = $conn->query($sql);
         <h2 class="text-center mb-4">Guest Messages & Inquiries</h2>
 
         <div class="card shadow-sm p-4">
+            
             <?php if ($result->num_rows > 0): ?>
+                
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-dark">
@@ -50,7 +53,9 @@ $result = $conn->query($sql);
                             <?php while($row = $result->fetch_assoc()): ?>
                                 <tr>
                                     <td style="white-space:nowrap;"><?php echo date("d.m.Y H:i", strtotime($row['created_at'])); ?></td>
+                                    
                                     <td class="fw-bold"><?php echo htmlspecialchars($row['sender_name']); ?></td>
+                                    
                                     <td><a href="mailto:<?php echo htmlspecialchars($row['sender_email']); ?>"><?php echo htmlspecialchars($row['sender_email']); ?></a></td>
                                     
                                     <td><?php echo nl2br(htmlspecialchars($row['message_text'])); ?></td>
@@ -69,11 +74,13 @@ $result = $conn->query($sql);
                         </tbody>
                     </table>
                 </div>
+
             <?php else: ?>
                 <div class="text-center py-5">
                     <h4 class="text-muted">No messages yet.</h4>
                 </div>
             <?php endif; ?>
+            
         </div>
 
         <div class="text-center mt-4">

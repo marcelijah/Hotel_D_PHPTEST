@@ -2,7 +2,8 @@
 session_start();
 require_once 'database.php';
 
-// Prüfen ob eingeloggt
+// --- SICHERHEITS-CHECK ---
+// Prüfen, ob der User eingeloggt ist. Wenn nicht, ab zur Login-Seite.
 if (!isset($_SESSION['loggedin'])) {
     header("Location: Loginpage.php");
     exit;
@@ -10,7 +11,9 @@ if (!isset($_SESSION['loggedin'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Buchungen holen
+// --- BUCHUNGEN LADEN ---
+// Wir laden nur die Buchungen, die zur aktuellen User-ID gehören (WHERE user_id = ?).
+// 'ORDER BY booking_date DESC' sorgt dafür, dass die neuesten Buchungen oben stehen.
 $sql = "SELECT * FROM bookings WHERE user_id = ? ORDER BY booking_date DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -58,9 +61,11 @@ $result = $stmt->get_result();
                         <thead class="table-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>Details</th> <th>Dates</th>
+                                <th>Details</th> 
+                                <th>Dates</th>
                                 <th>Price</th>
-                                <th style="width: 30%;">Status & Messages</th> <th>Actions</th>
+                                <th style="width: 30%;">Status & Messages</th> 
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>

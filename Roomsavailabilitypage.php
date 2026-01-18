@@ -5,26 +5,25 @@ require_once 'database.php';
 $error_message = '';
 $heute = date('Y-m-d'); 
 
-// ZENTRALE KONFIGURATION: Mapping von Namen zu Kapazitäten
-// Das macht die if-else-Ketten unten überflüssig
+// --- KONFIGURATION: Mapping von Namen zu Kapazitäten ---
 $capacityMap = [
-    'Single' => 1,
-    'Double' => 2,
-    'Triple' => 3,
+    'Single'    => 1,
+    'Double'    => 2,
+    'Triple'    => 3,
     'Quadruple' => 4,
-    'Suite' => 5,
-    'Family' => 5
+    'Suite'     => 5,
+    'Family'    => 5
 ];
 
-// Hilfsfunktion um Kapazität zu finden
+// Hilfsfunktion: Ermittelt Kapazität anhand des Namens
 function getCapacity($name, $map) {
     foreach ($map as $key => $cap) {
         if (stripos($name, $key) !== false) return $cap;
     }
-    return 2; // Standard-Fallback
+    return 2; // Standard-Fallback, falls Name unbekannt
 }
 
-// 1. ZIMMERTYPEN LADEN
+// 1. ZIMMERTYPEN AUS DB LADEN
 $sqlTypes = "SELECT * FROM room_types ORDER BY price ASC";
 $resultTypes = $conn->query($sqlTypes);
 
@@ -34,7 +33,8 @@ $maxGuestsGlobal = 1;
 if ($resultTypes) {
     while($row = $resultTypes->fetch_assoc()) {
         $roomTypes[] = $row;
-        // Automatische Kapazität ermitteln
+        
+        // Maximale Gästezahl für das Dropdown-Menü ermitteln
         $pCap = getCapacity($row['name'], $capacityMap);
         if ($pCap > $maxGuestsGlobal) {
             $maxGuestsGlobal = $pCap;
@@ -42,17 +42,18 @@ if ($resultTypes) {
     }
 }
 
-// 2. FORMULAR VERARBEITUNG
+// 2. FORMULAR VERARBEITUNG (Wenn User "Check Availability" klickt)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
     
     $zimmerName = $_POST['Zimmer'] ?? '';
-    $checkin = $_POST['Check-in'] ?? '';
-    $checkout = $_POST['Check-out'] ?? '';
-    $personen = (int)($_POST['Personen'] ?? 0); 
+    $checkin    = $_POST['Check-in'] ?? '';
+    $checkout   = $_POST['Check-out'] ?? '';
+    $personen   = (int)($_POST['Personen'] ?? 0); 
 
+    // Eingaben kurzzeitig speichern, falls Fehler auftreten
     $_SESSION['temp_inputs'] = $_POST;
 
-    // Validierung
+    // --- Validierung ---
     if (empty($zimmerName)) {
         $error_message = "Please select a room type.";
     }
@@ -63,14 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
         $error_message = "Error: Check-out date must be after Check-in date.";
     }
     else {
-        // Kapazität prüfen mit neuer Funktion
+        // Kapazität prüfen
         $max_allowed_guests = getCapacity($zimmerName, $capacityMap);
 
         if ($personen > $max_allowed_guests) {
             $error_message = "Error: The <strong>$zimmerName</strong> is only designed for a maximum of <strong>$max_allowed_guests guest(s)</strong>.";
         } 
         else {
-            // Bestand prüfen (DB Logic bleibt gleich)
+            // --- Verfügbarkeit in DB prüfen ---
             $stmtMax = $conn->prepare("SELECT capacity FROM room_types WHERE name = ?");
             $stmtMax->bind_param("s", $zimmerName);
             $stmtMax->execute();
@@ -81,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
             if ($rowMax) {
                 $total_rooms_in_stock = $rowMax['capacity']; 
                 
+                // Zählen, wie viele Buchungen es in diesem Zeitraum schon gibt
                 $sqlCount = "SELECT COUNT(*) as active_bookings FROM bookings 
                              WHERE room_type = ? 
                              AND check_in < ? 
@@ -92,9 +94,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
                 $current_active = $stmtCount->get_result()->fetch_assoc()['active_bookings'];
                 $stmtCount->close();
 
+                // Entscheidung: Voll oder Frei?
                 if ($current_active >= $total_rooms_in_stock) {
                     $error_message = "Sorry! All <strong>$zimmerName</strong>s are fully booked for these dates (0 left of $total_rooms_in_stock).";
                 } else {
+                    // Alles okay -> Weiterleitung zur Detailseite
                     $_SESSION['temp_booking'] = $_POST;
                     header("Location: Bookingdetailspage.php");
                     exit;
@@ -108,14 +112,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-        <title>Reservation - EA Hotel</title>
-        <link rel="stylesheet" href="assets/css/Roomsavailabilitypage.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation - EA Hotel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/Roomsavailabilitypage.css">
+</head>
+<body>
         
     <header class="container-fluid p-0 position-relative">
        <?php require_once __DIR__ . '/includes/header.php'; ?>
@@ -125,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
 
     <main class="flex-grow-1">
         <h1 class="TitelBuchen">Book A Room in EA Hotel</h1>
-        <h2 class="TitelGebenSie ">Enter your data and book your stay in Larnaca.</h2>
+        <h2 class="TitelGebenSie">Enter your data and book your stay in Larnaca.</h2>
 
         <section class="Buchung">
             
@@ -145,24 +149,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
                         
                         <?php foreach ($roomTypes as $room): ?>
                             <?php 
-                                // Bild-Logik
+                                // Bild-Zuordnung (Single vs andere)
                                 $imgSrc = (stripos($room['name'], 'Single') !== false) ? 'assets/img/Room_img1.jpg' : 'assets/img/Room_img2.jpg';
                                 
-                                // Text-Logik (Fallback)
+                                // Beschreibung setzen (Fallback falls leer)
                                 $description = !empty($room['description']) ? $room['description'] : "Enjoy a comfortable stay in our exclusive rooms.";
                                 
                                 if (empty($room['description'])) {
                                     if (stripos($room['name'], 'Single') !== false) {
-                                        $description = "Experience ultimate comfort in our exclusive single rooms, perfectly designed for solo travelers.";
+                                        $description = "Experience ultimate comfort in our exclusive single rooms.";
                                     } elseif (stripos($room['name'], 'Double') !== false) {
-                                        $description = "Relax in our spacious exclusive double rooms, offering a luxurious king-sized bed.";
+                                        $description = "Relax in our spacious exclusive double rooms.";
                                     } elseif (stripos($room['name'], 'Triple') !== false) {
-                                        $description = "Spacious triple room providing comfort for small groups or families with three beds.";
+                                        $description = "Spacious triple room providing comfort for small groups.";
                                     } elseif (stripos($room['name'], 'Quadruple') !== false) {
-                                        $description = "Large quadruple room with ample space, perfect for families of four looking for a relaxing stay.";
+                                        $description = "Large quadruple room with ample space for families.";
                                     }
                                 }
 
+                                // Checkbox Status behalten
                                 $isChecked = (isset($_POST['Zimmer']) && $_POST['Zimmer'] == $room['name']) ? 'checked' : '';
                             ?>
                             
@@ -186,7 +191,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
                             </div>
 
                         <?php endforeach; ?>
-
                     </div>
                 </div>
 
@@ -219,5 +223,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verfügbarkeit'])) {
 
     <?php require_once __DIR__ . '/includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script> 
-    </body>
+</body>
 </html>

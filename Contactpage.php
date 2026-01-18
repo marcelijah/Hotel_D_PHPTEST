@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+// Session starten, um auf eingeloggte User-Daten zugreifen zu können
+session_start(); 
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -10,6 +13,7 @@
 <body>
     
     <?php require_once __DIR__ . '/includes/header.php'; ?>
+    
     <?php require_once __DIR__ . '/includes/nav.php'; ?>
 
     <div class="slideshow">
@@ -24,9 +28,11 @@
             <div class="kontakt-image">
                 <img src="assets/img/Contact_img1.jpg" alt="Willkommen im EA Hotel">
             </div>
+            
             <div class="kontakt-textbox">
                 <h2>Contact Us</h2>
                 <div class="divider"></div>
+                
                 <div class="Daten">    
                     <h2>Reservation Department</h2>
                     <h3>Arian Sadeghian</h3>
@@ -56,13 +62,14 @@
 
     <section class="FormularBereich">
         <form action="forms/contact_send.php" method="post" class="FormularBox" enctype="multipart/form-data">
+            
             <div class="FormFeld">
                 <label for="Vorname">First Name</label>
                 <input id="Vorname" name="Vorname" type="text" required 
                        value="<?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : ''; ?>">
 
                 <label for="Nachname">Surname</label>
-                <input id="Nachname" name="Nachname" type="text" required>           
+                <input id="Nachname" name="Nachname" type="text" required>          
 
                 <label for="email">E-Mail</label>
                 <input id="email" name="email" type="email" required>                
@@ -72,6 +79,7 @@
             </div>
             
             <div class="d-flex align-items-end gap-3 mt-3">
+                
                 <div class="flex-grow-1">
                     <label for="attachment" class="form-label mb-1 fw-bold text-muted" style="font-size: 0.9rem;">Attach File (optional)</label>
                     <input class="form-control" type="file" id="attachment" name="attachment">
@@ -81,12 +89,11 @@
             </div>
 
         </form>
-
     </section>
 
     <?php require_once __DIR__ . '/includes/footer.php'; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>    
 
 </body>
 </html>

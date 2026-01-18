@@ -8,29 +8,35 @@ if (!isset($_SESSION['loggedin']) || !isset($_SESSION['is_admin']) || $_SESSION[
     exit;
 }
 
-// --- LOGIK FÜR BERICHTE ---
+// --- LOGIK FÜR BERICHTE & STATISTIKEN ---
 
 // 1. Gesamteinnahmen (Total Revenue)
+// SUM() addiert alle Werte der Spalte 'total_price'
 $sqlRevenue = "SELECT SUM(total_price) as total_revenue FROM bookings";
 $resRevenue = $conn->query($sqlRevenue);
+// Fallback auf 0, falls noch keine Buchungen da sind (?? 0)
 $totalRevenue = $resRevenue->fetch_assoc()['total_revenue'] ?? 0;
 
 // 2. Anzahl aller Buchungen (Total Bookings)
+// COUNT(*) zählt einfach alle Zeilen in der Tabelle
 $sqlCount = "SELECT COUNT(*) as total_bookings FROM bookings";
 $resCount = $conn->query($sqlCount);
 $totalBookings = $resCount->fetch_assoc()['total_bookings'] ?? 0;
 
 // 3. Aktive Buchungen heute (Gäste im Haus)
+// Logik: Ein Gast ist da, wenn Check-In <= Heute UND Check-Out > Heute
 $heute = date('Y-m-d');
 $sqlActive = "SELECT COUNT(*) as active_now FROM bookings WHERE check_in <= '$heute' AND check_out > '$heute'";
 $resActive = $conn->query($sqlActive);
 $activeNow = $resActive->fetch_assoc()['active_now'] ?? 0;
 
-// 4. Statistik nach Zimmertyp (Welcher Raum läuft am besten?)
+// 4. Statistik nach Zimmertyp (Performance)
+// GROUP BY gruppiert gleiche Zimmertypen zusammen.
+// Wir zählen (COUNT) und summieren den Umsatz (SUM) pro Typ.
 $sqlRooms = "SELECT room_type, COUNT(*) as count, SUM(total_price) as revenue 
              FROM bookings 
              GROUP BY room_type 
-             ORDER BY revenue DESC";
+             ORDER BY revenue DESC"; // Sortiert nach Umsatz (beste zuerst)
 $resRooms = $conn->query($sqlRooms);
 
 ?>
@@ -45,29 +51,11 @@ $resRooms = $conn->query($sqlRooms);
     <link rel="stylesheet" href="assets/css/Adminpage.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
-    <style>
-        /* Kleines extra Styling für die Dashboard-Karten */
-        .stat-card {
-            border-left: 5px solid rgb(1, 65, 91);
-            transition: transform 0.2s;
-        }
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .icon-box {
-            font-size: 2.5rem;
-            color: rgb(1, 65, 91);
-            opacity: 0.8;
-        }
-    </style>
 </head>
 
 <body>
 
-    <header class="container-fluid p-0 position-relative">
-        <?php require_once __DIR__ . '/includes/header.php'; ?>
-    </header>
+    <?php require_once __DIR__ . '/includes/header.php'; ?>
 
     <?php require_once __DIR__ . '/includes/adminnav.php'; ?>
 
@@ -140,6 +128,7 @@ $resRooms = $conn->query($sqlRooms);
                             <?php if ($resRooms->num_rows > 0): ?>
                                 <?php while($row = $resRooms->fetch_assoc()): ?>
                                     <?php 
+                                        // Durchschnitt berechnen (Verhinderung Division durch 0)
                                         $avg = $row['count'] > 0 ? $row['revenue'] / $row['count'] : 0; 
                                     ?>
                                     <tr>

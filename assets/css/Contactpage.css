@@ -1,12 +1,19 @@
-/* Allgemeine Stil für den Body */
+/* =========================================
+   Allgemeine Stil für den Body
+   Grundlegende Einstellungen für Schrift und Ränder
+========================================= */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     color: #333;
-    overflow-x: hidden; /* verhindert horizontales Scrollen */
+    overflow-x: hidden; /* Verhindert horizontales Scrollen */
 }
 
+/* =========================================
+   Header & Logo
+   Stil für die Hauptüberschrift "EA Hotel"
+========================================= */
 h1.EA-Hotel {
     font-size: 2.2rem;
     color: #01415b;
@@ -15,7 +22,10 @@ h1.EA-Hotel {
     font-weight: 600;
 }
 
-/* Navigation */
+/* =========================================
+   Navigation
+   Design der Navigationsleiste
+========================================= */
 nav.Leiste {
     background-color: rgb(1, 65, 91); 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -28,6 +38,7 @@ nav.Leiste .nav-link {
     transition: all 0.3s ease;
 }
 
+/* Hover-Effekt für Navigationslinks */
 nav.Leiste .nav-link:hover {
     background-color: rgb(1, 49, 68);
     padding: 5px 15px;
@@ -35,13 +46,16 @@ nav.Leiste .nav-link:hover {
     transform: scale(1.1);
 }
 
+/* =========================================
+   Slideshow (Bildwechsler)
+========================================= */
 .slideshow {
     position: relative;
     width: 100%;
-    max-width: 100vw; /* verhindert horizontales Scrollen */
+    max-width: 100vw; /* Verhindert horizontales Scrollen */
     height: 800px;     
     overflow: hidden;
-    animation: fadeInZoom 0.9s ease-out forwards; /* neue Animation */
+    animation: fadeInZoom 0.9s ease-out forwards; /* Start-Animation */
 }
 
 /* --- Allgemeiner Stil für alle Bilder ---- */
@@ -60,58 +74,60 @@ nav.Leiste .nav-link:hover {
     background-image: url('../img/Homepage_img1.jpg');
     animation-delay: 0s;
 }
-
 .s2 {
     background-image: url('../img/Homepage_img2.jpg');
     animation-delay: 10s;
 }
-
 .s3 {
     background-image: url('../img/Homepage_img3.jpg');
     animation-delay: 20s;
 }
 
-/*  Animation: Fade In & Fade Out und slideshow */
+/* Animation: Fade In & Fade Out und Slideshow-Logik */
 @keyframes slideshow {
     0%   { opacity: 0; }
     5%   { opacity: 1; }
-    30%  { opacity: 1; }   /* 1 Bild bleibt sichtbar 0 transparent */
-    35%  { opacity: 0; }
+    30%  { opacity: 1; }   /* Bild bleibt sichtbar */
+    35%  { opacity: 0; }   /* Bild blendet aus */
     100% { opacity: 0; }
 }
 
+/* Animation: Hineinzoomen beim Laden der Seite */
 @keyframes fadeInZoom {
     0% {
         opacity: 0;
-        transform: scale(0.9); /* start kleiner */
+        transform: scale(0.9); /* Startet kleiner */
     }
     100% {
         opacity: 1;
-        transform: scale(1);   /* auf normale Größe */
+        transform: scale(1);   /* Auf normale Größe */
     }
 }
 
+/* Text über der Slideshow ("Contact Us") */
 .slideshow-text {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* zentriert horizontal und vertikal */
+    transform: translate(-50%, -50%); /* Zentriert horizontal und vertikal */
     color: white;
     font-size: 3rem;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* leichter Schatten für bessere Lesbarkeit */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Leichter Schatten für Lesbarkeit */
     text-align: center;
-    pointer-events: none; /* verhindert, dass der Text klickbar ist */
+    pointer-events: none; /* Verhindert, dass der Text klickbar ist */
 }
 
-/* Intro-Abschnitt */
+/* =========================================
+   Intro-Abschnitt / Kontakt-Info
+========================================= */
 .kontakt {
     display: flex;
     justify-content: center;
     margin: 80px 0;
 }
 
-/* Bild + Text nebeneinander */
+/* Container für Bild + Textbox nebeneinander */
 .kontakt-container {
     display: flex;
     align-items: flex-start;
@@ -119,27 +135,26 @@ nav.Leiste .nav-link:hover {
     position: relative;
 }
 
-/* Bild links */
+/* Bild links neben dem Text */
 .kontakt-image img {
     width: 650px;
     height: auto;
     box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
     position: relative;
-    top: 60px;      /* Über der Box */
+    top: 60px;      /* Verschiebt das Bild leicht nach unten über die Box */
     border-radius: 4px;
 }
 
-/* Rechte Box */
+/* Rechte Box mit Kontaktinformationen */
 .kontakt-textbox {
     background: white;
     padding: 50px 60px;
-    border: 1px solid rgba(1, 65, 91, 0.15); /* sehr helle Linie */
+    border: 1px solid rgba(1, 65, 91, 0.15); /* Sehr helle Linie */
     max-width: 750px;
     position: relative;
-    
 }
 
-/* Titel */
+/* Titel in der Kontakt-Box */
 .kontakt-textbox h2 {
     font-size: 2.8rem;
     font-weight: 600;
@@ -148,7 +163,7 @@ nav.Leiste .nav-link:hover {
     font-family: serif;
 }
 
-/* Kleine Linie unter "Willkommen" */
+/* Kleine Linie unter der Überschrift */
 .divider {
     width: 60px;
     height: 2px;
@@ -156,15 +171,16 @@ nav.Leiste .nav-link:hover {
     margin: 10px 0 25px 0;
 }
 
-.Daten h2{
+/* Spezielle Überschriften innerhalb der Daten */
+.Daten h2 {
     font-size: 2rem;
 }
 
-.Daten h3{
+.Daten h3 {
     font-size: 1.5rem;
 }
 
-/* Text */
+/* Fließtext in der Box */
 .kontakt-textbox p {
     color: rgb(1, 65, 91);
     line-height: 1.7;
@@ -172,6 +188,10 @@ nav.Leiste .nav-link:hover {
     margin-bottom: 15px;
     font-family: serif;
 }
+
+/* =========================================
+   Kontaktformular
+========================================= */
 
 /* Überschrift über dem Formular */
 .KontaktTitel {
@@ -201,21 +221,21 @@ nav.Leiste .nav-link:hover {
     width: 100%;
 }
 
-/* Ein Feld (Label + Input oder Textarea) */
+/* Ein Feld (Wrapper für Label + Input) */
 .FormFeld {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
 }
 
-/* Label bleibt wie es ist, aber schöner formatiert */
+/* Label Styling */
 .FormFeld label {
     font-weight: 600;
     margin-bottom: 5px;
     color: #333;
 }
 
-/* Inputs/Textareas bleiben DEINE IDs, bekommen nur Style */
+/* Inputs und Textareas Styling */
 .FormFeld input,
 .FormFeld textarea {
     padding: 8px 10px;
@@ -228,14 +248,14 @@ nav.Leiste .nav-link:hover {
     font-family: serif;
 }
 
-/* schöner Fokus */
+/* Fokus-Effekt für Eingabefelder */
 .FormFeld input:focus,
 .FormFeld textarea:focus {
     border-color: rgb(1, 65, 91);
     box-shadow: 0 0 4px rgba(1, 65, 91, 0.4);
 }
 
-/* Dein existierender Button */
+/* Senden-Button */
 #Button {
     background-color: rgb(1, 65, 91);
     color: #fff;
@@ -248,25 +268,82 @@ nav.Leiste .nav-link:hover {
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-/* Hover-Effekt */
+/* Hover-Effekt für Button */
 #Button:hover {
     background-color: rgb(1, 49, 68);
     transform: translateY(-1px);
 }
 
-/* Responsive */
+/* =========================================
+   Responsive Design (Tablets & Mobile)
+========================================= */
 @media (max-width: 768px) {
+    /* Formularbox anpassen */
     .FormularBox {
         padding: 20px;
         margin: 0 15px;
     }
 
+    /* Titel kleiner auf mobilen Geräten */
     .KontaktTitel {
         font-size: 1.7rem;
     }
+
+    /* Logo anpassen */
+    .EA-Hotel {
+        font-size: 1.8em;
+    }
+    
+    /* Navigation vertikal stapeln */
+    nav.Leiste {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Kontaktbereich anpassen */
+    .kontakt {
+        padding: 30px 20px;
+    }
+    
+    /* Container umbrechen (Bild unter Text) */
+    .kontakt-container {
+        flex-direction: column; 
+        align-items: center;    
+        gap: 30px;              
+        padding: 20px;         
+    }
+
+    /* Bildgröße anpassen */
+    .kontakt-image img {
+        width: 100%;           
+        max-width: 400px;      
+        margin-top: 20px;      
+    }
+
+    /* Textbox anpassen */
+    .kontakt-textbox {
+        padding: 30px 20px;    
+        max-width: 100%;      
+    }
+
+    .kontakt-textbox h2 {
+        font-size: 1.8rem;    
+    }
+
+    .kontakt-textbox p {
+        font-size: 1rem;      
+        line-height: 1.6;     
+    }
+    
+    /* Slideshow Text kleiner */
+    .slideshow-text {
+        font-size: 1.5rem;
+    }
 }
 
-/* Footer-Stil */
+/* =========================================
+   Footer
+========================================= */
 footer {
     background-color: rgb(1, 65, 91);
     color: white;
@@ -278,52 +355,12 @@ footer {
     margin-top: 30px;
 }
 
-/* für kleinere Bildschirmgrößen */
-@media (max-width: 768px) {
-    .EA-Hotel {
-        font-size: 1.8em;
-    }
-    nav.Leiste {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .kontakt {
-        padding: 30px 20px;
-    }
-   .kontakt-container {
-        flex-direction: column; /* Bild unter Text oder umgekehrt */
-        align-items: center;    /* Zentriert alles horizontal */
-        gap: 30px;              /* Weniger Abstand */
-        padding: 20px;          /* Innenabstand */
-    }
-
-    .kontakt-image img {
-        width: 100%;           /* Bild passt sich Bildschirm an */
-        max-width: 400px;      /* nicht zu groß */
-        margin-top: 20px;      /* leicht Abstand nach oben */
-    }
-
-    .kontakt-textbox {
-        padding: 30px 20px;    /* Textbox kleiner machen */
-        max-width: 100%;       /* passt sich an */
-    }
-
-    .kontakt-textbox h2 {
-        font-size: 1.8rem;    /* kleinere Überschrift */
-    }
-
-    .kontakt-textbox p {
-        font-size: 1rem;      /* Text etwas kleiner */
-        line-height: 1.6;     /* angenehmer Lesefluss */
-    }
-    .slideshow-text {
-        font-size: 1.5rem;
-    }
-}
-
+/* =========================================
+   Welcome Bar (Login Status)
+========================================= */
 .welcome-bar {
-    color: #01415b; /* passend zum EA HOTEL Schriftzug */
+    color: #01415b; /* Passend zum EA HOTEL Schriftzug */
     font-weight: 500;
     font-size: 1.2rem;
-    white-space: nowrap; /* verhindert Zeilenumbruch */
+    white-space: nowrap; /* Verhindert Zeilenumbruch */
 }

@@ -1,20 +1,27 @@
 <?php
 session_start();
-require_once 'database.php';
+require_once 'database.php'; // Verbindung zur Datenbank herstellen
 
-// 1. Sicherheits-Check: Nur Admin darf hier rein
+// --- SICHERHEITS-CHECK ---
+// 1. Ist der User eingeloggt?
+// 2. Ist das Admin-Flag gesetzt?
+// 3. Ist der Wert exakt 1?
 if (!isset($_SESSION['loggedin']) || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1) {
+    // Falls nein: Sofort rauswerfen zur Homepage
     header("Location: Homepage.php");
     exit;
 }
 
-// 2. Buchungen abrufen
-// Wir verknüpfen (JOIN) die Tabelle 'bookings' mit 'users', 
-// damit wir den Namen des Gastes anzeigen können.
+// --- BUCHUNGEN ABRUFEN ---
+// Wir wollen nicht nur die Buchungsdaten (Tabelle bookings), sondern auch den Namen 
+// und die E-Mail des Gastes (Tabelle users) anzeigen.
+// Dafür nutzen wir einen JOIN über die Spalte 'user_id'.
+// 'ORDER BY booking_date DESC' sortiert die neuesten Buchungen nach oben.
 $sql = "SELECT b.*, u.`First Name`, u.Surname, u.`E-Mail` 
         FROM bookings b 
         JOIN users u ON b.user_id = u.ID 
         ORDER BY b.booking_date DESC";
+
 $result = $conn->query($sql);
 ?>
 
@@ -24,15 +31,14 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check Bookings - EA Hotel Admin</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/Adminpage.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-<body>
 
-    <header class="container-fluid p-0 position-relative">
-        <?php require_once __DIR__ . '/includes/header.php'; ?>
-    </header>
+<body>
+    <?php require_once __DIR__ . '/includes/header.php'; ?>
 
     <?php require_once __DIR__ . '/includes/adminnav.php'; ?>
 
@@ -43,8 +49,14 @@ $result = $conn->query($sql);
             <div class="alert alert-success text-center">Email sent successfully to the guest!</div>
         <?php endif; ?>
 
+        <?php if(isset($_GET['deleted'])): ?>
+            <div class="alert alert-warning text-center">Booking cancelled successfully.</div>
+        <?php endif; ?>
+
         <div class="card shadow-sm p-4">
+            
             <?php if ($result->num_rows > 0): ?>
+                
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-dark">
@@ -84,6 +96,7 @@ $result = $conn->query($sql);
                                     
                                     <td>
                                         <div class="btn-group" role="group">
+                                            
                                             <a href="AdminContactGuest.php?booking_id=<?php echo $row['booking_id']; ?>" class="btn btn-outline-primary btn-sm" title="Send Message">
                                                 <i class="bi bi-envelope-at-fill"></i> Contact
                                             </a>
@@ -109,11 +122,13 @@ $result = $conn->query($sql);
                         </tbody>
                     </table>
                 </div>
+
             <?php else: ?>
                 <div class="text-center py-5">
-                    <h4 class="text-muted">No active bookings found.</h4>
+                    <h4 class="text-muted">No bookings found.</h4>
                 </div>
             <?php endif; ?>
+
         </div>
         
         <div class="text-center mt-4">
@@ -123,6 +138,7 @@ $result = $conn->query($sql);
     </main>
 
     <?php require_once __DIR__ . '/includes/footer.php'; ?>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

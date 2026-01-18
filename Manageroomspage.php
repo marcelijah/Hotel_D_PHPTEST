@@ -3,6 +3,7 @@ session_start();
 require_once 'database.php';
 
 // 1. Sicherheits-Check: Ist User eingeloggt UND Admin?
+// Falls nicht, sofortiger Rausschmiss zur Homepage.
 if (!isset($_SESSION['loggedin']) || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1) {
     header("Location: Homepage.php");
     exit;
@@ -11,14 +12,18 @@ if (!isset($_SESSION['loggedin']) || !isset($_SESSION['is_admin']) || $_SESSION[
 $msg = "";
 
 // --- LOGIK: NEUES ZIMMER HINZUFÜGEN ---
+// Prüfen, ob das Formular "add_room" gesendet wurde
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_room'])) {
+    // Eingaben säubern (Leerzeichen entfernen) und Typen erzwingen (float/int)
     $newName = trim($_POST['new_name']);
     $newPrice = (float)$_POST['new_price'];
     $newCapacity = (int)$_POST['new_capacity'];
-    $newDesc = trim($_POST['new_description']); // NEU
+    $newDesc = trim($_POST['new_description']); 
 
     if (!empty($newName) && $newPrice > 0 && $newCapacity > 0) {
-        // Prüfen ob Name schon existiert
+        
+        // Dubletten-Check: Gibt es den Namen schon?
+        // Das verhindert, dass wir zweimal "Single Room" haben.
         $check = $conn->prepare("SELECT id FROM room_types WHERE name = ?");
         $check->bind_param("s", $newName);
         $check->execute();
@@ -26,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_room'])) {
         if ($check->get_result()->num_rows > 0) {
             $msg = "<div class='alert alert-danger'>Error: A room with this name already exists!</div>";
         } else {
-            // Einfügen (jetzt mit Description)
+            // Einfügen in die Datenbank
             $stmt = $conn->prepare("INSERT INTO room_types (name, price, capacity, description) VALUES (?, ?, ?, ?)");
             $stmt->bind_param("sdis", $newName, $newPrice, $newCapacity, $newDesc);
             if ($stmt->execute()) {
@@ -41,11 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_room'])) {
 }
 
 // --- LOGIK: ZIMMER UPDATEN ---
+// Wird ausgelöst, wenn man in der Tabelle auf "Save" klickt
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_room'])) {
     $id = (int)$_POST['room_id'];
     $price = (float)$_POST['price'];
     $capacity = (int)$_POST['capacity'];
-    $desc = trim($_POST['description']); // NEU
+    $desc = trim($_POST['description']);
 
     $stmt = $conn->prepare("UPDATE room_types SET price=?, capacity=?, description=? WHERE id=?");
     $stmt->bind_param("disi", $price, $capacity, $desc, $id);
@@ -60,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_room'])) {
 // --- LOGIK: ZIMMER LÖSCHEN ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_room'])) {
     $id = (int)$_POST['room_id'];
+    
     $stmt = $conn->prepare("DELETE FROM room_types WHERE id=?");
     $stmt->bind_param("i", $id);
     if($stmt->execute()) {
@@ -68,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_room'])) {
 }
 
 // --- DATEN LADEN ---
+// Alle Zimmer für die Tabelle laden
 $result = $conn->query("SELECT * FROM room_types ORDER BY id ASC");
 ?>
 
@@ -81,10 +89,8 @@ $result = $conn->query("SELECT * FROM room_types ORDER BY id ASC");
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-
-    <header class="container-fluid p-0 position-relative">
-        <?php require_once __DIR__ . '/includes/header.php'; ?>
-    </header>
+    
+    <?php require_once __DIR__ . '/includes/header.php'; ?>
 
     <?php require_once __DIR__ . '/includes/adminnav.php'; ?>
 

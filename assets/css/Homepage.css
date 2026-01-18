@@ -1,72 +1,84 @@
-/* Allgemeine Stil für den Body */
+/* =========================================
+   Allgemeine Stil für den Body
+   Setzt die Basis-Schriftart und verhindert horizontales Scrollen
+========================================= */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     color: #333;
-    overflow-x: hidden; /* verhindert horizontales Scrollen */
+    overflow-x: hidden; /* Verhindert, dass die Seite seitlich wackelt/scrollt */
 }
 
-/* EA Hotel Logo oben */
+/* =========================================
+   EA Hotel Logo (Überschrift)
+========================================= */
 h1.EA-Hotel {
     font-size: 2.2rem;      
-    color: #01415b;
-    margin-left: 0; /* bootstrap zentriert oder links */
+    color: #01415b; /* EA Hotel Dunkelblau */
+    margin-left: 0; /* Standardausrichtung (Links) */
     margin-top: 10px;
     font-weight: 600;
 }
 
-/* Navigation */
+/* =========================================
+   Navigation
+   Design der oberen Menüleiste
+========================================= */
 nav.Leiste {
     background-color: rgb(1, 65, 91); 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Leichter Schatten nach unten */
 }
 
 /* Links in der Navigation */
 nav.Leiste .nav-link {
     color: white;
     font-size: 1.2em;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease; /* Weicher Übergang bei Hover */
 }
 
+/* Hover-Effekt für die Links */
 nav.Leiste .nav-link:hover {
-    background-color: rgb(1, 49, 68);
+    background-color: rgb(1, 49, 68); /* Etwas dunkler beim Drüberfahren */
     padding: 5px 15px;
     border-radius: 5px;
-    transform: scale(1.1);
+    transform: scale(1.1); /* Link wird leicht vergrößert */
 }
 
-/* Intro-Abschnitt */
+/* =========================================
+   Intro-Abschnitt
+   Bereich mit "Willkommen" Text und Bild
+========================================= */
 .intro {
-    padding: 80px 0;
+    padding: 80px 0; /* Viel Abstand oben und unten */
 }
 
-/* Bild */
+/* Bild im Intro-Bereich */
 .intro img {
     width: 100%;
-    max-width: 650px;
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+    max-width: 650px; /* Begrenzung der Breite */
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15); /* Weicher Schatten für 3D-Effekt */
     border-radius: 4px;
 }
 
-/* Textbox */
+/* Textbox "Willkommen" */
 .intro-textbox {
     background: white;
     padding: 50px 60px;
-    border: 1px solid rgba(1, 65, 91, 0.15); 
+    border: 1px solid rgba(1, 65, 91, 0.15); /* Sehr feiner blauer Rahmen */
     max-width: 750px;
 }
 
-/* Titel */
+/* Überschrift in der Textbox */
 .intro-textbox h2 {
     font-size: 2.8rem;
     font-weight: 600;
     color: rgb(1, 65, 91);
     margin-bottom: 5px;
-    font-family: serif;
+    font-family: serif; /* Serifen-Schrift für eleganteren Look */
 }
 
-/* Kleine Linie unter "Willkommen" */
+/* Kleine Zierlinie unter der Überschrift */
 .divider {
     width: 60px;
     height: 2px;
@@ -74,39 +86,43 @@ nav.Leiste .nav-link:hover {
     margin: 10px 0 25px 0;
 }
 
-/* Text */
+/* Fließtext im Intro */
 .intro-textbox p {
     color: rgb(1, 65, 91);
-    line-height: 1.7;
+    line-height: 1.7; /* Zeilenabstand für bessere Lesbarkeit */
     font-size: 1.15rem;
     margin-bottom: 15px;
     font-family: serif;
 }
 
-/* Slideshow */
+/* =========================================
+   Slideshow (Bildwechsler)
+========================================= */
 .slideshow {
     position: relative;
     width: 100%;
     height: 800px;     
-    overflow: hidden;
-    animation: fadeInZoom 0.9s ease-out forwards;
+    overflow: hidden; /* Schneidet alles ab, was übersteht */
+    animation: fadeInZoom 0.9s ease-out forwards; /* Start-Animation */
 }
 
-/* Bilder */
+/* Basis-Stil für die Bilder */
 .slide {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    animation: slideshow 30s infinite; 
+    background-size: cover;      /* Bild füllt den Container */
+    background-position: center; /* Bild zentrieren */
+    opacity: 0;                  /* Startet unsichtbar */
+    animation: slideshow 30s infinite; /* Endlosschleife */
 }
 
+/* Definition der einzelnen Bilder und wann sie starten */
 .s1 { background-image: url('../img/Homepage_img1.jpg'); animation-delay: 0s; }
 .s2 { background-image: url('../img/Homepage_img2.jpg'); animation-delay: 10s; }
 .s3 { background-image: url('../img/Homepage_img3.jpg'); animation-delay: 20s; }
 
+/* Animation: Einblenden - Warten - Ausblenden */
 @keyframes slideshow {
     0%   { opacity: 0; }
     5%   { opacity: 1; }
@@ -115,24 +131,28 @@ nav.Leiste .nav-link:hover {
     100% { opacity: 0; }
 }
 
+/* Start-Animation: Hineinzoomen beim Laden */
 @keyframes fadeInZoom {
     0% { opacity: 0; transform: scale(0.9); }
     100% { opacity: 1; transform: scale(1); }
 }
 
+/* Text über der Slideshow */
 .slideshow-text {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); /* Exakt mittig platzieren */
     color: white;
     font-size: 3rem;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Schatten für Lesbarkeit */
     text-align: center;
 }
 
-/* Footer */
+/* =========================================
+   Footer
+========================================= */
 footer {
     background-color: rgb(1, 65, 91);
     color: white;
@@ -141,20 +161,37 @@ footer {
     margin-top: 30px;
 }
 
-/* Responsive Anpassungen */
+/* =========================================
+   Responsive Anpassungen (Handy/Tablet)
+   Wenn der Bildschirm kleiner als 768px ist
+========================================= */
 @media (max-width: 768px) {
     h1.EA-Hotel { font-size: 1.8rem; }
+    
     .intro { padding: 30px 20px; }
-    .intro-textbox { padding: 30px 20px; max-width: 100%; }
+    
+    .intro-textbox { 
+        padding: 30px 20px; 
+        max-width: 100%; 
+    }
+    
     .intro-textbox h2 { font-size: 1.8rem; }
-    .intro-textbox p { font-size: 1rem; line-height: 1.6; }
+    
+    .intro-textbox p { 
+        font-size: 1rem; 
+        line-height: 1.6; 
+    }
+    
     .slideshow-text { font-size: 1.5rem; }
 }
 
-/* Willkommen-Text rechts oben im Header */
+/* =========================================
+   Welcome-Bar
+   Rechts oben im Header (für eingeloggte User)
+========================================= */
 .welcome-bar {
-    color: #01415b; /* passend zum EA HOTEL Schriftzug */
+    color: #01415b; /* Passend zum EA HOTEL Schriftzug */
     font-weight: 500;
     font-size: 1.2rem;
-    white-space: nowrap; /* verhindert Zeilenumbruch */
+    white-space: nowrap; /* Verhindert Zeilenumbruch */
 }

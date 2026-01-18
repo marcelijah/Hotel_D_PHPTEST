@@ -1,12 +1,18 @@
 <?php
+// Session starten, um auf Login-Daten zuzugreifen
 session_start();
 
-// 1. Sicherheits-Check: Ist der User eingeloggt UND ist er Admin?
+// --- SICHERHEITS-CHECK ---
+// 1. Ist der User eingeloggt?
+// 2. Ist das Admin-Flag gesetzt?
+// 3. Ist der Wert des Admin-Flags exakt 1?
 if (!isset($_SESSION['loggedin']) || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1) {
+    // Falls nein: Sofortige Weiterleitung zur Startseite (Schutz vor unbefugtem Zugriff)
     header("Location: Homepage.php");
     exit;
 }
 
+// Name des Admins für die Begrüßung holen (Fallback auf "Admin", falls leer)
 $adminName = $_SESSION['user_name'] ?? 'Admin';
 ?>
 
@@ -16,19 +22,19 @@ $adminName = $_SESSION['user_name'] ?? 'Admin';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - EA Hotel</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="assets/css/Adminpage.css">
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-
-    <header class="container-fluid p-0 position-relative">
-        <?php require_once __DIR__ . '/includes/header.php'; ?>
-    </header>
+    
+    <?php require_once __DIR__ . '/includes/header.php'; ?>
 
     <?php require_once __DIR__ . '/includes/adminnav.php'; ?>
 
-    <!-- Slideshow -->
     <div class="slideshow">
         <div class="slide s1" style="background-image: url('assets/img/Homepage_img1.jpg');"></div>
         <div class="slide s2" style="background-image: url('assets/img/Homepage_img2.jpg');"></div>
